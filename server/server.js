@@ -21,6 +21,9 @@ const app = express();
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(compression());
 
+// Trust proxy (required for Render, Railway, etc.)
+app.set('trust proxy', 1);
+
 // Rate limiting
 app.use('/api/', rateLimit({
   windowMs: 15 * 60 * 1000,
