@@ -1,0 +1,17 @@
+{
+  "nav": {
+    "home": "होम",
+    "about": "हमारे बारे में",
+    "products": "उत्पाद",
+    "services": "सेवाएं",
+    "advisory": "सलाह",
+    "gallery": "गैलरी",
+    "contact": "संपर्क करें"
+  },
+  "products": {
+    "seeds": "बीज",
+    "fertilizers": "उर्वरक",
+    "pesticides": "कीटनाशक",
+    "hardware": "हार्डवेयर"
+  }
+}
