@@ -1,8 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { API_URL } from "@/lib/api";
 
 const AuthContext = createContext(null);
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -36,11 +35,7 @@ export const AuthProvider = ({ children }) => {
         logout();
       }
     } catch (err) {
-      // Server might be offline, keep local user data
-      const savedUser = localStorage.getItem('lkk_user');
-      if (savedUser) {
-        try { setUser(JSON.parse(savedUser)); } catch (e) { /* ignore */ }
-      }
+      logout();
     } finally {
       setLoading(false);
     }

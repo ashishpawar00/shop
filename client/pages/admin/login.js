@@ -3,8 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { FiLock, FiUser, FiEye, FiEyeOff } from 'react-icons/fi';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+import { API_URL } from '@/lib/api';
 
 export default function AdminLogin() {
   const [formData, setFormData] = useState({

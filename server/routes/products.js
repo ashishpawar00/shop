@@ -5,21 +5,27 @@ const Product = require('../models/Product');
 const { auth, adminOnly } = require('../middleware/auth');
 const { upload, deleteImage } = require('../middleware/upload');
 
+function escapeRegex(s) {
+  return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 // PUBLIC: Get all products (with filters, search, pagination)
 router.get('/', async (req, res) => {
   try {
-    const { category, crop, search, sortBy, inStock, page = 1, limit = 20 } = req.query;
+    const { category, crop, search, sortBy, inStock, featured, page = 1, limit = 20 } = req.query;
     const query = {};
 
     if (category && category !== 'all') query.category = category;
     if (crop && crop !== 'all') query.cropType = crop;
     if (inStock === 'true') query.inStock = true;
+    if (featured === 'true') query.featured = true;
     if (search) {
+      const safe = escapeRegex(search);
       query.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { nameHindi: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } },
-        { brand: { $regex: search, $options: 'i' } }
+        { name: { $regex: safe, $options: 'i' } },
+        { nameHindi: { $regex: safe, $options: 'i' } },
+        { description: { $regex: safe, $options: 'i' } },
+        { brand: { $regex: safe, $options: 'i' } }
       ];
     }
 
@@ -39,6 +45,24 @@ router.get('/', async (req, res) => {
       currentPage: parseInt(page),
       totalCount: total
     });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// ADMIN: Product stats (must be before /:id)
+router.get('/admin/stats', auth, adminOnly, async (req, res) => {
+  try {
+    const total = await Product.countDocuments();
+    const inStock = await Product.countDocuments({ inStock: true });
+    const outOfStock = await Product.countDocuments({ inStock: false });
+    const featuredCount = await Product.countDocuments({ featured: true });
+
+    const byCategory = await Product.aggregate([
+      { $group: { _id: '$category', count: { $sum: 1 } } }
+    ]);
+
+    res.json({ total, inStock, outOfStock, featured: featuredCount, byCategory });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -121,24 +145,6 @@ router.delete('/:id', auth, adminOnly, async (req, res) => {
     // Delete image from Cloudinary
     if (product.image) await deleteImage(product.image);
     res.json({ message: 'Product deleted' });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// ADMIN: Product stats
-router.get('/admin/stats', auth, adminOnly, async (req, res) => {
-  try {
-    const total = await Product.countDocuments();
-    const inStock = await Product.countDocuments({ inStock: true });
-    const outOfStock = await Product.countDocuments({ inStock: false });
-    const featured = await Product.countDocuments({ featured: true });
-
-    const byCategory = await Product.aggregate([
-      { $group: { _id: '$category', count: { $sum: 1 } } }
-    ]);
-
-    res.json({ total, inStock, outOfStock, featured, byCategory });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -14,6 +14,7 @@ import {
   FiHome
 } from "react-icons/fi";
 import { FaWhatsapp, FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
+import { API_URL } from "@/lib/api";
 
 export default function Contact() {
   const { language } = useLanguage();
@@ -60,7 +61,6 @@ export default function Contact() {
     setError("");
 
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
       const res = await fetch(`${API_URL}/enquiries`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

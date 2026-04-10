@@ -11,7 +11,7 @@ import {
 import { TbTractor, TbSeeding } from 'react-icons/tb';
 import { GiPlantWatering } from 'react-icons/gi';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+import { API_URL } from '@/lib/api';
 
 export default function Products() {
   const { language } = useLanguage();

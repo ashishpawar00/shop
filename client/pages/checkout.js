@@ -5,8 +5,7 @@ import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { FiMapPin, FiCreditCard, FiCheckCircle, FiShoppingCart, FiPhone } from 'react-icons/fi';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+import { API_URL } from '@/lib/api';
 
 export default function Checkout() {
     const { cart, cartTotal, clearCart } = useCart();
@@ -52,13 +51,8 @@ export default function Checkout() {
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify({
                     items: cart.map(item => ({
-                        product: item._id || undefined,
-                        name: item.name,
-                        nameHindi: item.nameHindi || '',
-                        price: item.price,
-                        quantity: item.quantity,
-                        image: item.image || '',
-                        category: item.category || ''
+                        product: item._id || item.id,
+                        quantity: item.quantity
                     })),
                     deliveryAddress: address,
                     paymentMethod,

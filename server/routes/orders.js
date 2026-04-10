@@ -1,8 +1,27 @@
 // server/routes/orders.js
 const express = require('express');
+const mongoose = require('mongoose');
 const router = express.Router();
 const Order = require('../models/Order');
+const Product = require('../models/Product');
+const Counter = require('../models/Counter');
 const { auth, adminOnly } = require('../middleware/auth');
+
+const MAX_LINE_QTY = 99;
+
+async function getNextOrderNumber() {
+    await Counter.updateOne(
+        { _id: 'orderNumber' },
+        { $setOnInsert: { seq: 1000 } },
+        { upsert: true }
+    );
+    const doc = await Counter.findOneAndUpdate(
+        { _id: 'orderNumber' },
+        { $inc: { seq: 1 } },
+        { new: true }
+    );
+    return `LKK-${String(doc.seq).padStart(6, '0')}`;
+}
 
 // USER: Create order
 router.post('/', auth, async (req, res) => {
@@ -19,23 +38,63 @@ router.post('/', auth, async (req, res) => {
             return res.status(400).json({ message: 'Payment method must be COD or UPI' });
         }
 
-        // Calculate totals
-        const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const byProduct = new Map();
+        for (const raw of items) {
+            const pid = raw.product || raw.productId || raw._id;
+            if (!pid || !mongoose.Types.ObjectId.isValid(String(pid))) {
+                return res.status(400).json({ message: 'Each item must include a valid product id' });
+            }
+            const qty = Math.min(Math.max(parseInt(raw.quantity, 10) || 0, 1), MAX_LINE_QTY);
+            const key = String(pid);
+            byProduct.set(key, (byProduct.get(key) || 0) + qty);
+        }
+
+        const ids = [...byProduct.keys()];
+        const products = await Product.find({ _id: { $in: ids } });
+        const pmap = new Map(products.map((p) => [String(p._id), p]));
+        if (products.length !== ids.length) {
+            return res.status(400).json({ message: 'One or more products were not found' });
+        }
+
+        const lineItems = [];
+        for (const [idStr, qty] of byProduct) {
+            const product = pmap.get(idStr);
+            if (!product.inStock) {
+                return res.status(400).json({ message: `Out of stock: ${product.name}` });
+            }
+            const unitPrice = Number(product.price);
+            if (Number.isNaN(unitPrice) || unitPrice < 0) {
+                return res.status(400).json({ message: `Invalid price for product: ${product.name}` });
+            }
+            lineItems.push({
+                product: product._id,
+                name: product.name,
+                nameHindi: product.nameHindi || '',
+                price: unitPrice,
+                quantity: qty,
+                image: product.image || '',
+                category: product.category || ''
+            });
+        }
+
+        const subtotal = lineItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
         const deliveryCharge = subtotal >= 500 ? 0 : 50;
         const totalAmount = subtotal + deliveryCharge;
+        const orderNumber = await getNextOrderNumber();
 
         const order = new Order({
+            orderNumber,
             user: req.user._id,
             customerName: req.user.name,
             customerPhone: req.user.phone,
             customerEmail: req.user.email,
             deliveryAddress,
-            items,
+            items: lineItems,
             subtotal,
             deliveryCharge,
             totalAmount,
             paymentMethod,
-            paymentStatus: paymentMethod === 'COD' ? 'Pending' : 'Pending',
+            paymentStatus: 'Pending',
             orderStatus: 'Pending',
             notes: notes || ''
         });

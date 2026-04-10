@@ -11,8 +11,7 @@ import {
   FiShield, FiPlus, FiTrash2, FiEdit, FiPhone, FiMail,
   FiCalendar, FiFilter, FiX, FiImage, FiAlertCircle
 } from 'react-icons/fi';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+import { API_URL } from '@/lib/api';
 
 export default function AdminDashboard() {
   const { user, token, isAdmin, loading: authLoading } = useAuth();

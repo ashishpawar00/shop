@@ -6,8 +6,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useCart } from '@/contexts/CartContext';
 import { FiPhone, FiMessageCircle, FiMapPin, FiCheck, FiTruck, FiShield, FiUsers, FiShoppingCart, FiPlus } from 'react-icons/fi';
 import { MdLocalFlorist, MdAgriculture, MdWaterDrop } from 'react-icons/md';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+import { API_URL } from '@/lib/api';
 
 export default function Home() {
   const { t, language } = useLanguage();
