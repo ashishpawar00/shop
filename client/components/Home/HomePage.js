@@ -706,10 +706,10 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4">
             {loadingProducts
               ? [1, 2, 3, 4].map(item => (
-                  <div key={item} className="h-[24rem] animate-pulse rounded-[2rem] bg-slate-card" />
+                  <div key={item} className="h-[15rem] animate-pulse rounded-[1.5rem] bg-slate-card sm:h-[20rem] sm:rounded-[2rem]" />
                 ))
               : featuredProducts.map(product => {
                   const productId = product.id || product._id || product.name;
@@ -724,9 +724,9 @@ export default function HomePage() {
                   return (
                     <div
                       key={productId}
-                      className="group flex h-full flex-col rounded-[2rem] border border-line-soft/10 bg-slate-card p-6 shadow-xl shadow-black/10 transition-all duration-300 hover:-translate-y-1 hover:bg-slate-card/90"
+                      className="group flex h-full flex-col rounded-[1.5rem] border border-line-soft/10 bg-slate-card p-3 shadow-xl shadow-black/10 transition-all duration-300 hover:-translate-y-1 hover:bg-slate-card/90 sm:rounded-[2rem] sm:p-5 lg:p-6"
                     >
-                      <div className="mb-6 flex aspect-square items-center justify-center overflow-hidden rounded-[1.5rem] bg-slate-base">
+                      <div className="mb-3 flex aspect-[1/1] items-center justify-center overflow-hidden rounded-[1.2rem] bg-slate-base sm:mb-5 sm:aspect-square sm:rounded-[1.5rem]">
                         {product.image ? (
                           <img
                             src={product.image}
@@ -740,23 +740,25 @@ export default function HomePage() {
                         )}
                       </div>
 
-                      <div className="mb-4 flex items-start justify-between gap-4">
-                        <span className="rounded-full bg-accent-emerald/10 px-3 py-1 text-[11px] font-black uppercase tracking-[0.12em] text-accent-emerald">
+                      <div className="mb-3 flex items-start justify-between gap-2 sm:mb-4 sm:gap-4">
+                        <span className="rounded-full bg-accent-emerald/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.1em] text-accent-emerald sm:px-3 sm:text-[11px] sm:tracking-[0.12em]">
                           {productCategory}
                         </span>
-                        <span className="text-2xl font-bold text-ink-primary">?{product.price}</span>
+                        <span className="text-lg font-bold text-ink-primary sm:text-xl lg:text-2xl">Rs {product.price}</span>
                       </div>
 
-                      <h3 className="text-xl font-bold text-ink-primary transition-colors group-hover:text-accent-emerald">
+                      <h3 className="line-clamp-2 text-base font-bold text-ink-primary transition-colors group-hover:text-accent-emerald sm:text-lg lg:text-xl">
                         {productName}
                       </h3>
-                      <p className="mt-3 flex-grow text-sm leading-relaxed text-ink-muted">{productDescription}</p>
+                      <p className="mt-2 line-clamp-2 flex-grow text-xs leading-relaxed text-ink-muted sm:mt-3 sm:text-sm">
+                        {productDescription}
+                      </p>
 
-                      <div className="mt-6 flex gap-3">
+                      <div className="mt-3 flex gap-2 sm:mt-5 sm:gap-3">
                         <button
                           type="button"
                           onClick={() => handleAddToCart(product)}
-                          className="flex h-12 flex-1 items-center justify-center rounded-2xl bg-accent-emerald font-bold text-white transition-colors hover:bg-emerald-600"
+                          className="flex h-10 flex-1 items-center justify-center rounded-xl bg-accent-emerald px-2 text-xs font-bold text-white transition-colors hover:bg-emerald-600 sm:h-11 sm:rounded-2xl sm:text-sm"
                         >
                           {addedId === productId || inCart ? (
                             <>
@@ -777,9 +779,9 @@ export default function HomePage() {
                           )}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-base text-accent-emerald transition-all hover:bg-accent-emerald/10 hover:text-accent-emerald"
+                          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-base text-accent-emerald transition-all hover:bg-accent-emerald/10 hover:text-accent-emerald sm:h-11 sm:w-11 sm:rounded-2xl"
                         >
-                          <FiMessageCircle size={20} />
+                          <FiMessageCircle size={18} />
                         </a>
                       </div>
                     </div>
