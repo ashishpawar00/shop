@@ -1,293 +1,235 @@
+// client/components/Layout/Footer.js
 import React from "react";
 import Link from "next/link";
-import { FiMapPin, FiPhone, FiClock, FiMessageCircle, FiMail, FiArrowUp } from "react-icons/fi";
-import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
+import { FiMapPin, FiPhone, FiClock, FiMail, FiArrowUp, FiSend } from "react-icons/fi";
+import { FaFacebook, FaInstagram, FaYoutube, FaWhatsapp } from "react-icons/fa";
 import { useLanguage } from "../../contexts/LanguageContext";
 
 const Footer = () => {
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
   const currentYear = new Date().getFullYear();
   const phoneNumber = "9977938192";
 
-  // Back to top handler
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Footer data for better organization
-  const footerData = {
-    about: {
-      title: language === 'hi' ? 'लक्ष्मी कृषि केंद्र' : 'Laxmi Krashi Kendra',
-      description: language === 'hi' 
-        ? '25+ वर्षों से किसानों की सेवा में। गुणवत्तापूर्ण कृषि उत्पाद और विश्वसनीय सलाह।'
-        : 'Serving farmers for 25+ years. Quality agricultural products and reliable advice.'
-    },
-    contact: [
-      { 
-        icon: FiMapPin, 
-        text: language === 'hi' 
-          ? 'बस स्टैंड चौक, सिराथा, पिन कोड – 480334'
-          : 'Bus Stand Chowk, Siratha, Pin Code – 480334',
-        href: 'https://maps.google.com/?q=Bus+Stand+Chowk+Siratha+480334',
-        isLink: true,
-        ariaLabel: language === 'hi' ? 'मैप पर देखें' : 'View on map'
-      },
-      { 
-        icon: FiPhone, 
-        text: phoneNumber,
-        href: `tel:${phoneNumber}`,
-        isLink: true,
-        ariaLabel: language === 'hi' ? 'फोन करें' : 'Call us'
-      },
-      { 
-        icon: FiMessageCircle, 
-        text: language === 'hi' ? 'व्हाट्सएप पर संपर्क करें' : 'Contact on WhatsApp',
-        href: `https://wa.me/91${phoneNumber}`,
-        isLink: true,
-        target: '_blank',
-        ariaLabel: 'WhatsApp'
-      },
-      { 
-        icon: FiClock, 
-        text: language === 'hi' 
-          ? 'सोम–शनिवार: सुबह 9:00 – शाम 8:00'
-          : 'Mon–Sat: 9:00 AM – 8:00 PM'
-      }
+  const footerLinks = {
+    quick: [
+      { label: language === 'hi' ? 'होम' : 'Home', href: '/' },
+      { label: language === 'hi' ? 'उत्पाद' : 'Products', href: '/products' },
+      { label: language === 'hi' ? 'फसल डॉक्टर' : 'Crop Doctor', href: '/crop-doctor' },
+      { label: language === 'hi' ? 'हमारे बारे में' : 'About', href: '/about' },
     ],
-    quickLinks: [
-      { label: language === 'hi' ? 'हमारे बारे में' : 'About Us', href: '/about' },
-      { label: language === 'hi' ? 'सेवाएं' : 'Services', href: '/services' },
-      { label: language === 'hi' ? 'फसल सलाह' : 'Crop Advisory', href: '/advisory' },
-      { label: language === 'hi' ? 'गैलरी' : 'Gallery', href: '/gallery' },
-      { label: language === 'hi' ? 'संपर्क करें' : 'Contact Us', href: '/contact' }
-    ],
-    products: [
-      { label: language === 'hi' ? 'बीज' : 'Seeds', href: '/products?category=seeds' },
-      { label: language === 'hi' ? 'उर्वरक' : 'Fertilizers', href: '/products?category=fertilizers' },
-      { label: language === 'hi' ? 'कीटनाशक' : 'Pesticides', href: '/products?category=pesticides' },
-      { label: language === 'hi' ? 'कृषि उपकरण' : 'Agricultural Tools', href: '/products?category=hardware' }
-    ],
-    socialLinks: [
-      { icon: FaFacebook, href: '#', label: 'Facebook' },
-      { icon: FaInstagram, href: '#', label: 'Instagram' },
-      { icon: FaYoutube, href: '#', label: 'YouTube' }
+    support: [
+      { label: language === 'hi' ? 'प्राइवेसी' : 'Privacy Policy', href: '/privacy' },
+      { label: language === 'hi' ? 'शर्तें' : 'Terms of Service', href: '/terms' },
+      { label: language === 'hi' ? 'संपर्क' : 'Contact Us', href: '/contact' },
     ]
   };
 
-  // Contact Info Item Component
-  const ContactItem = ({ item }) => {
-    const content = (
-      <div className={`flex items-start gap-3 ${item.isLink ? 'group cursor-pointer' : ''}`}>
-        <div className={`mt-1 ${item.isLink ? 'text-green-400 group-hover:text-green-300 transition-colors' : 'text-gray-400'}`}>
-          <item.icon />
-        </div>
-        <span className={`${item.isLink ? 'group-hover:text-white transition-colors' : ''}`}>
-          {item.text}
-        </span>
-      </div>
-    );
-
-    if (item.isLink) {
-      return (
-        <a 
-          href={item.href}
-          target={item.target || '_self'}
-          rel={item.target === '_blank' ? 'noopener noreferrer' : undefined}
-          className="block"
-          aria-label={item.ariaLabel}
-        >
-          {content}
-        </a>
-      );
-    }
-
-    return content;
-  };
-
-  // Footer Column Component
-  const FooterColumn = ({ title, items, isLinks = true }) => (
-    <div>
-      <h4 className="text-lg font-semibold mb-6 pb-2 border-b border-green-700 inline-block">
-        {title}
-      </h4>
-      <ul className="space-y-3">
-        {items.map((item, index) => (
-          <li key={index}>
-            {isLinks ? (
-              <Link 
-                href={item.href}
-                className="text-gray-300 hover:text-green-300 hover:pl-2 transition-all duration-200 flex items-center group"
-                aria-label={item.label}
-              >
-                <span className="opacity-0 group-hover:opacity-100 mr-2 transition-opacity">→</span>
-                {item.label}
-              </Link>
-            ) : (
-              <ContactItem item={item} />
-            )}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-
   return (
-    <>
-      {/* Back to Top Button */}
-      <button
+    <footer className="relative bg-slate-base pt-24 pb-12 overflow-hidden">
+      {/* Scroll to top decorative */}
+      <button 
         onClick={scrollToTop}
-        className="fixed bottom-8 right-8 bg-green-600 text-white p-3 rounded-full shadow-xl hover:bg-green-700 hover:shadow-2xl transition-all duration-300 z-40 animate-bounce-slow"
-        aria-label={language === 'hi' ? 'ऊपर जाएं' : 'Back to top'}
+        className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-slate-card rounded-full flex items-center justify-center text-accent-emerald hover:text-white hover:scale-110 transition-all shadow-2xl z-10"
       >
-        <FiArrowUp size={20} />
+        <FiArrowUp size={24} />
       </button>
 
-      {/* Main Footer */}
-      <footer className="bg-gradient-to-b from-gray-900 to-black text-white" role="contentinfo">
-        <div className="max-w-7xl mx-auto px-4 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
-            
-            {/* About Section */}
-            <div className="lg:col-span-2">
-              <div className="flex items-center mb-6">
-                <div className="h-12 w-12 rounded-full bg-gradient-to-br from-green-600 to-emerald-700 flex items-center justify-center mr-4">
-                  <span className="text-white font-bold text-xl">LK</span>
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold">{footerData.about.title}</h3>
-                  <p className="text-sm text-green-300">25+ {language === 'hi' ? 'वर्षों का विश्वास' : 'Years of Trust'}</p>
-                </div>
-              </div>
-              <p className="text-gray-300 mb-6 leading-relaxed">
-                {footerData.about.description}
-              </p>
-              
-              {/* Trust Badges */}
-              <div className="flex flex-wrap gap-4 mb-6">
-                <div className="flex items-center gap-2 px-3 py-2 bg-gray-800 rounded-lg">
-                  <span className="text-green-400">✓</span>
-                  <span className="text-sm">{language === 'hi' ? 'प्रमाणित उत्पाद' : 'Certified Products'}</span>
-                </div>
-                <div className="flex items-center gap-2 px-3 py-2 bg-gray-800 rounded-lg">
-                  <span className="text-green-400">✓</span>
-                  <span className="text-sm">{language === 'hi' ? 'विशेषज्ञ सलाह' : 'Expert Advice'}</span>
-                </div>
-              </div>
-
-              {/* Social Links */}
-              <div>
-                <h5 className="text-sm font-semibold text-gray-400 mb-3">
-                  {language === 'hi' ? 'हमें फॉलो करें' : 'Follow Us'}
-                </h5>
-                <div className="flex gap-3">
-                  {footerData.socialLinks.map((social, index) => (
-                    <a
-                      key={index}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-gray-800 hover:bg-green-600 p-3 rounded-full transition-all duration-300 hover:scale-110"
-                      aria-label={social.label}
-                    >
-                      <social.icon />
-                    </a>
-                  ))}
-                </div>
-              </div>
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-16">
+          {/* Brand Col */}
+          <div className="lg:col-span-2">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-12 h-12 bg-accent-emerald rounded-xl flex items-center justify-center text-white font-bold text-2xl shadow-lg shadow-emerald-500/20">L</div>
+              <span className="text-2xl font-outfit font-bold text-white tracking-tight">Laxmi Krashi <span className="text-accent-emerald">Kendra</span></span>
             </div>
-
-            {/* Contact Section */}
-            <FooterColumn 
-              title={language === 'hi' ? 'संपर्क करें' : 'Contact Us'} 
-              items={footerData.contact}
-              isLinks={false}
-            />
-
-            {/* Quick Links */}
-            <FooterColumn 
-              title={language === 'hi' ? 'त्वरित लिंक' : 'Quick Links'} 
-              items={footerData.quickLinks}
-            />
-
-            {/* Products */}
-            <FooterColumn 
-              title={language === 'hi' ? 'उत्पाद' : 'Products'} 
-              items={footerData.products}
-            />
+            <p className="text-slate-400 text-lg max-w-md leading-relaxed mb-8">
+              {language === 'hi' 
+                ? 'सिराथा का सबसे भरोसेमंद कृषि केंद्र। हम 25+ वर्षों से किसानों को सही समाधान और उत्पाद प्रदान कर रहे हैं।' 
+                : 'Siratha\'s most trusted agricultural hub. Providing farmers with right solutions and products for over 25+ years.'}
+            </p>
+            <div className="flex gap-4">
+              {[FaFacebook, FaInstagram, FaYoutube, FaWhatsapp].map((Icon, i) => (
+                <a key={i} href="#" className="w-12 h-12 bg-slate-card rounded-xl flex items-center justify-center text-slate-400 hover:text-accent-emerald hover:bg-slate-hover transition-all">
+                  <Icon size={20} />
+                </a>
+              ))}
+            </div>
           </div>
 
-          {/* Bottom Section */}
-          <div className="border-t border-gray-800 mt-12 pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-              <div className="text-center md:text-left">
-                <p className="text-gray-400">
-                  © {currentYear} {footerData.about.title}. {language === 'hi' 
-                    ? 'सर्वाधिकार सुरक्षित।' 
-                    : 'All rights reserved.'}
-                </p>
-                <p className="text-gray-500 text-sm mt-2">
-                  {language === 'hi' 
-                    ? 'कृषि इनपुट्स में 25+ वर्षों का विश्वास'
-                    : '25+ Years of Trust in Agricultural Inputs'}
-                </p>
-              </div>
-              
-              <div className="flex gap-6">
-                <Link 
-                  href="/privacy" 
-                  className="text-gray-400 hover:text-green-300 text-sm transition-colors"
-                  aria-label={language === 'hi' ? 'गोपनीयता नीति' : 'Privacy Policy'}
-                >
-                  {language === 'hi' ? 'गोपनीयता नीति' : 'Privacy Policy'}
-                </Link>
-                <Link 
-                  href="/terms" 
-                  className="text-gray-400 hover:text-green-300 text-sm transition-colors"
-                  aria-label={language === 'hi' ? 'सेवा की शर्तें' : 'Terms of Service'}
-                >
-                  {language === 'hi' ? 'सेवा की शर्तें' : 'Terms of Service'}
-                </Link>
-                <Link 
-                  href="/sitemap" 
-                  className="text-gray-400 hover:text-green-300 text-sm transition-colors"
-                  aria-label="Sitemap"
-                >
-                  {language === 'hi' ? 'साइटमैप' : 'Sitemap'}
-                </Link>
-              </div>
+          {/* Links Col */}
+          <div>
+            <h4 className="text-white font-bold text-lg mb-8">{language === 'hi' ? 'त्वरित लिंक' : 'Quick Links'}</h4>
+            <div className="flex flex-col gap-4">
+              {footerLinks.quick.map((link, i) => (
+                <Link key={i} href={link.href} className="text-slate-500 hover:text-white transition-colors">{link.label}</Link>
+              ))}
             </div>
+          </div>
 
-            {/* Trust Seals */}
-            <div className="flex flex-wrap justify-center gap-6 mt-8 pt-6 border-t border-gray-800">
-              <div className="text-center">
-                <div className="text-2xl mb-1">🔒</div>
-                <p className="text-xs text-gray-400">{language === 'hi' ? 'सुरक्षित' : 'Secure'}</p>
+          {/* Contact Col */}
+          <div>
+            <h4 className="text-white font-bold text-lg mb-8">{language === 'hi' ? 'संपर्क करें' : 'Contact us'}</h4>
+            <div className="space-y-6">
+              <div className="flex items-start gap-4">
+                <div className="mt-1 text-accent-emerald"><FiMapPin size={20} /></div>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  {language === 'hi' ? 'बस स्टैंड चौक, सिराथा, मध्य प्रदेश - 480334' : 'Bus Stand Chowk, Siratha, Madhya Pradesh - 480334'}
+                </p>
               </div>
-              <div className="text-center">
-                <div className="text-2xl mb-1">⭐</div>
-                <p className="text-xs text-gray-400">{language === 'hi' ? 'रेटेड 4.8/5' : 'Rated 4.8/5'}</p>
+              <div className="flex items-center gap-4">
+                <div className="text-accent-emerald"><FiPhone size={20} /></div>
+                <p className="text-slate-400 font-bold">{phoneNumber}</p>
               </div>
-              <div className="text-center">
-                <div className="text-2xl mb-1">🚚</div>
-                <p className="text-xs text-gray-400">{language === 'hi' ? 'मुफ्त डिलीवरी' : 'Free Delivery'}</p>
+              <div className="flex items-center gap-4">
+                <div className="text-accent-emerald"><FiClock size={20} /></div>
+                <p className="text-slate-400 text-sm">{language === 'hi' ? '9:00 AM - 8:00 PM (सोम-शनि)' : '9:00 AM - 8:00 PM (Mon-Sat)'}</p>
               </div>
             </div>
           </div>
         </div>
-      </footer>
 
-      {/* Custom CSS for animations */}
-      <style jsx global>{`
-        @keyframes bounce-slow {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-        .animate-bounce-slow {
-          animation: bounce-slow 2s infinite;
-        }
-      `}</style>
-    </>
+        {/* Bottom Banner */}
+        <div className="mt-24 pt-12 border-t border-slate-hover flex flex-col md:flex-row justify-between items-center gap-8">
+          <p className="text-slate-500 text-sm">
+            © {currentYear} Laxmi Krashi Kendra. {language === 'hi' ? 'सभी अधिकार सुरक्षित।' : 'All rights reserved.'}
+          </p>
+          <div className="flex gap-8">
+            {footerLinks.support.map((link, i) => (
+              <Link key={i} href={link.href} className="text-slate-600 hover:text-slate-300 text-xs uppercase tracking-widest">{link.label}</Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    </footer>
   );
 };
 
-export default Footer;
+const CleanFooter = () => {
+  const { language, t } = useLanguage();
+  const currentYear = new Date().getFullYear();
+  const phoneNumber = '9977938192';
+  const quickLinks = [
+    { label: t('nav_home'), href: '/' },
+    { label: t('nav_products'), href: '/products' },
+    { label: t('nav_crop_doctor'), href: '/crop-doctor' },
+    { label: t('nav_about'), href: '/about' }
+  ];
+  const supportLinks = [
+    { label: t('privacy'), href: '/privacy' },
+    { label: t('terms'), href: '/terms' },
+    { label: t('nav_contact'), href: '/contact' }
+  ];
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  return (
+    <footer className="relative overflow-hidden bg-slate-base pb-12 pt-24">
+      <button
+        type="button"
+        onClick={scrollToTop}
+        className="absolute left-1/2 top-0 z-10 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-slate-card text-accent-emerald shadow-2xl transition-all hover:scale-110 hover:text-white"
+        aria-label="Scroll to top"
+      >
+        <FiArrowUp size={24} />
+      </button>
+
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="grid gap-16 lg:grid-cols-4">
+          <div className="lg:col-span-2">
+            <div className="mb-8 flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent-emerald text-2xl font-bold text-white shadow-lg shadow-emerald-500/20">
+                L
+              </div>
+              <span className="text-2xl font-bold tracking-tight text-white font-outfit">
+                Laxmi Krashi <span className="text-accent-emerald">Kendra</span>
+              </span>
+            </div>
+
+            <p className="mb-8 max-w-md text-lg leading-relaxed text-slate-400">
+              {language === 'hi'
+                ? 'सिराथा का भरोसेमंद कृषि केंद्र। हम 25+ वर्षों से किसानों को सही उत्पाद, तेज सलाह और भरोसेमंद मार्गदर्शन दे रहे हैं।'
+                : 'Siratha’s trusted agriculture center, helping farmers with dependable products, quick advice, and grounded local support for 25+ years.'}
+            </p>
+
+            <div className="flex gap-4">
+              {[FaFacebook, FaInstagram, FaYoutube, FaWhatsapp].map((Icon, index) => (
+                <a
+                  key={index}
+                  href={index === 3 ? `https://wa.me/91${phoneNumber}` : '#'}
+                  className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-card text-slate-400 transition-all hover:bg-slate-hover hover:text-accent-emerald"
+                  aria-label="Social link"
+                >
+                  <Icon size={20} />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h4 className="mb-8 text-lg font-bold text-white">{t('quick_links')}</h4>
+            <div className="flex flex-col gap-4">
+              {quickLinks.map(link => (
+                <Link key={link.href} href={link.href} className="text-slate-500 transition-colors hover:text-white">
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h4 className="mb-8 text-lg font-bold text-white">{t('contact_us')}</h4>
+            <div className="space-y-6">
+              <div className="flex items-start gap-4">
+                <div className="mt-1 text-accent-emerald">
+                  <FiMapPin size={20} />
+                </div>
+                <p className="text-sm leading-relaxed text-slate-400">
+                  {language === 'hi'
+                    ? 'बस स्टैंड चौक, सिराथा, मध्य प्रदेश - 480334'
+                    : 'Bus Stand Chowk, Siratha, Madhya Pradesh - 480334'}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <div className="text-accent-emerald">
+                  <FiPhone size={20} />
+                </div>
+                <p className="font-bold text-slate-400">{phoneNumber}</p>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <div className="text-accent-emerald">
+                  <FiClock size={20} />
+                </div>
+                <p className="text-sm text-slate-400">
+                  {language === 'hi' ? '9:00 AM - 8:00 PM (सोम-शनि)' : '9:00 AM - 8:00 PM (Mon-Sat)'}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-24 flex flex-col items-center justify-between gap-8 border-t border-slate-hover pt-12 md:flex-row">
+          <p className="text-sm text-slate-500">
+            © {currentYear} Laxmi Krashi Kendra. {language === 'hi' ? 'सभी अधिकार सुरक्षित।' : 'All rights reserved.'}
+          </p>
+          <div className="flex gap-8">
+            {supportLinks.map(link => (
+              <Link key={link.href} href={link.href} className="text-xs uppercase tracking-widest text-slate-600 hover:text-slate-300">
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default CleanFooter;

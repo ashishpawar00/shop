@@ -1,45 +1,94 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Devanagari:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --surface-base: 10 15 13;
+  --surface-card: 16 22 20;
+  --surface-hover: 28 37 33;
+  --text-primary: 248 250 252;
+  --text-secondary: 203 213 225;
+  --text-muted: 148 163 184;
+  --line-soft: 255 255 255;
+  --line-strong: 148 163 184;
+  color-scheme: dark;
+}
+
+html.theme-light {
+  --surface-base: 244 247 244;
+  --surface-card: 255 255 255;
+  --surface-hover: 232 239 233;
+  --text-primary: 10 15 13;
+  --text-secondary: 39 52 44;
+  --text-muted: 93 110 99;
+  --line-soft: 15 23 42;
+  --line-strong: 170 184 176;
+  color-scheme: light;
+}
+
+html.theme-dark {
+  color-scheme: dark;
+}
+
 @layer base {
   html {
     font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
     scroll-behavior: smooth;
+    background-color: rgb(var(--surface-base));
+    color: rgb(var(--text-primary));
   }
   
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    @apply min-h-screen font-sans;
+    background-color: rgb(var(--surface-base));
+    color: rgb(var(--text-primary));
   }
   
   .hindi {
     font-family: 'Noto Sans Devanagari', 'Inter', sans-serif;
   }
+
+  /* No-Line Rule: Remove all borders by default */
+  * {
+    @apply border-0;
+  }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-all duration-300 font-semibold shadow-md hover:shadow-lg;
+    @apply flex h-12 items-center justify-center rounded-full bg-accent-emerald px-8 font-bold text-white shadow-lg transition-all duration-300 active:scale-95 hover:bg-emerald-600;
   }
   
   .btn-secondary {
-    @apply border-2 border-green-600 text-green-600 px-6 py-3 rounded-lg hover:bg-green-50 transition-all duration-300 font-semibold;
-  }
-  
-  .input-field {
-    @apply border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200;
+    @apply flex h-12 items-center justify-center rounded-full border border-accent-emerald/55 bg-transparent px-8 font-bold text-accent-emerald shadow-sm transition-all duration-300 active:scale-95 hover:bg-accent-emerald/10;
   }
 
-  .card-hover {
-    @apply hover:shadow-xl hover:-translate-y-1 transition-all duration-300;
+  .glass-card {
+    @apply bg-slate-card/72 backdrop-blur-md shadow-2xl-soft;
   }
+}
 
-  .gradient-text {
-    @apply bg-gradient-to-r from-green-600 to-emerald-700 bg-clip-text text-transparent;
-  }
+body,
+nav,
+main,
+section,
+footer,
+article,
+aside,
+button,
+a,
+input,
+textarea,
+select {
+  transition:
+    background-color 220ms ease,
+    color 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
 }
 
 /* Scrollbar styling */

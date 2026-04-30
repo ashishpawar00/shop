@@ -5,40 +5,39 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import ProductCard from '@/components/Products/ProductCard';
 import { FiSearch } from 'react-icons/fi';
 
+const sampleProducts = [
+  {
+    id: 1,
+    name: 'Hybrid Wheat Seeds',
+    description: 'High-yield hybrid wheat seeds',
+    category: 'seeds',
+    price: 2500,
+    unit: 'kg'
+  },
+  {
+    id: 2,
+    name: 'NPK Fertilizer',
+    description: 'Balanced NPK fertilizer for plant growth',
+    category: 'fertilizers',
+    price: 1200,
+    unit: 'kg'
+  },
+  {
+    id: 3,
+    name: 'Spray Pump',
+    description: 'Manual spray pump for pesticides',
+    category: 'hardware',
+    price: 1800,
+    unit: 'piece'
+  }
+];
+
 export default function Products() {
   const { t } = useLanguage();
   const router = useRouter();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
-
-  // Sample products data - replace with actual API call
-  const sampleProducts = [
-    {
-      id: 1,
-      name: 'Hybrid Wheat Seeds',
-      description: 'High-yield hybrid wheat seeds',
-      category: 'seeds',
-      price: 2500,
-      unit: 'kg'
-    },
-    {
-      id: 2,
-      name: 'NPK Fertilizer',
-      description: 'Balanced NPK fertilizer for plant growth',
-      category: 'fertilizers',
-      price: 1200,
-      unit: 'kg'
-    },
-    {
-      id: 3,
-      name: 'Spray Pump',
-      description: 'Manual spray pump for pesticides',
-      category: 'hardware',
-      price: 1800,
-      unit: 'piece'
-    }
-  ];
 
   useEffect(() => {
     // Simulate API call

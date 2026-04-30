@@ -1,3 +1,4 @@
+/*
 import React from 'react';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -69,3 +70,71 @@ const ProductsSection = () => {
 };
 
 export default ProductsSection;
+*/
+
+import React from 'react';
+import Link from 'next/link';
+import { useLanguage } from '@/contexts/LanguageContext';
+
+const categories = [
+  {
+    key: 'seeds',
+    count: '50+',
+    description: 'Hybrid and native seed options for local farms.',
+  },
+  {
+    key: 'fertilizers',
+    count: '30+',
+    description: 'Organic and conventional fertilizers for every season.',
+  },
+  {
+    key: 'pesticides',
+    count: '40+',
+    description: 'Crop protection products for insects, fungus, and disease.',
+  },
+  {
+    key: 'hardware',
+    count: '20+',
+    description: 'Essential tools, irrigation parts, and farm equipment.',
+  },
+];
+
+function CleanProductsSection() {
+  const { t } = useLanguage();
+
+  return (
+    <section className="bg-gray-50 py-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-12 flex items-center justify-between">
+          <h2 className="text-3xl font-bold text-gray-800">{t('products')}</h2>
+          <Link href="/products" className="font-semibold text-green-600 hover:text-green-700">
+            {t('view_all')} {'->'}
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {categories.map((category) => (
+            <div
+              key={category.key}
+              className="rounded-xl bg-white p-6 shadow-md transition hover:-translate-y-1 hover:shadow-lg"
+            >
+              <div className="text-center">
+                <div className="mb-4 text-5xl font-bold text-green-600 opacity-20">{category.count}</div>
+                <h3 className="mb-2 text-xl font-bold text-gray-800">{t(category.key)}</h3>
+                <p className="text-gray-600">{category.description}</p>
+                <Link
+                  href={`/products?category=${category.key}`}
+                  className="mt-4 inline-block text-green-600 hover:text-green-700"
+                >
+                  {t('view_details')}
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default CleanProductsSection;

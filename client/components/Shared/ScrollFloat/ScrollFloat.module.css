@@ -1,0 +1,15 @@
+.scrollFloat {
+  overflow: hidden;
+  display: block;
+}
+
+.scrollFloatText {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.1em;
+}
+
+.char {
+  display: inline-block;
+}

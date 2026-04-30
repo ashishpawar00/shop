@@ -10,7 +10,14 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_WHATSAPP_NUMBER: '919977938192',
     NEXT_PUBLIC_PHONE_NUMBER: '9977938192',
-  }
-}
+  },
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.(glb|gltf)$/i,
+      type: 'asset/resource',
+    });
+    return config;
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

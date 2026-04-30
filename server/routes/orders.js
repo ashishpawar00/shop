@@ -8,19 +8,78 @@ const Counter = require('../models/Counter');
 const { auth, adminOnly } = require('../middleware/auth');
 
 const MAX_LINE_QTY = 99;
+const ORDER_PREFIX = 'LKK-';
+const DEFAULT_ORDER_SEQUENCE = 1000;
+const ORDER_NUMBER_RETRY_LIMIT = 5;
+
+function extractOrderSequence(orderNumber) {
+    if (typeof orderNumber !== 'string' || !orderNumber.startsWith(ORDER_PREFIX)) {
+        return 0;
+    }
+
+    const numericPart = parseInt(orderNumber.slice(ORDER_PREFIX.length), 10);
+    return Number.isFinite(numericPart) ? numericPart : 0;
+}
+
+async function getHighestExistingOrderSequence() {
+    const latestOrder = await Order.findOne({
+        orderNumber: { $regex: `^${ORDER_PREFIX}\\d+$` }
+    })
+        .sort({ orderNumber: -1 })
+        .select('orderNumber')
+        .lean();
+
+    return latestOrder ? extractOrderSequence(latestOrder.orderNumber) : 0;
+}
+
+async function ensureOrderCounterIsCurrent() {
+    const highestExistingSequence = await getHighestExistingOrderSequence();
+    const minimumSequence = Math.max(DEFAULT_ORDER_SEQUENCE, highestExistingSequence);
+    const counter = await Counter.findById('orderNumber');
+
+    if (!counter) {
+        await Counter.create({ _id: 'orderNumber', seq: minimumSequence });
+        return;
+    }
+
+    if ((counter.seq || 0) < minimumSequence) {
+        counter.seq = minimumSequence;
+        await counter.save();
+    }
+}
 
 async function getNextOrderNumber() {
-    await Counter.updateOne(
-        { _id: 'orderNumber' },
-        { $setOnInsert: { seq: 1000 } },
-        { upsert: true }
-    );
+    await ensureOrderCounterIsCurrent();
     const doc = await Counter.findOneAndUpdate(
         { _id: 'orderNumber' },
         { $inc: { seq: 1 } },
-        { new: true }
+        { new: true, upsert: true, setDefaultsOnInsert: true }
     );
-    return `LKK-${String(doc.seq).padStart(6, '0')}`;
+    return `${ORDER_PREFIX}${String(doc.seq).padStart(6, '0')}`;
+}
+
+async function createOrderWithUniqueNumber(orderData) {
+    let lastDuplicateError = null;
+
+    for (let attempt = 0; attempt < ORDER_NUMBER_RETRY_LIMIT; attempt += 1) {
+        try {
+            const orderNumber = await getNextOrderNumber();
+            const order = new Order({
+                ...orderData,
+                orderNumber
+            });
+            await order.save();
+            return order;
+        } catch (error) {
+            if (error?.code === 11000 && error?.keyValue?.orderNumber) {
+                lastDuplicateError = error;
+                continue;
+            }
+            throw error;
+        }
+    }
+
+    throw lastDuplicateError || new Error('Unable to generate a unique order number.');
 }
 
 // USER: Create order
@@ -80,10 +139,7 @@ router.post('/', auth, async (req, res) => {
         const subtotal = lineItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
         const deliveryCharge = subtotal >= 500 ? 0 : 50;
         const totalAmount = subtotal + deliveryCharge;
-        const orderNumber = await getNextOrderNumber();
-
-        const order = new Order({
-            orderNumber,
+        const order = await createOrderWithUniqueNumber({
             user: req.user._id,
             customerName: req.user.name,
             customerPhone: req.user.phone,
@@ -98,8 +154,6 @@ router.post('/', auth, async (req, res) => {
             orderStatus: 'Pending',
             notes: notes || ''
         });
-
-        await order.save();
 
         res.status(201).json({
             message: 'Order placed successfully',

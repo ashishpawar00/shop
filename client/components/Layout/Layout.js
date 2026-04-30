@@ -1,7 +1,7 @@
 import React from 'react';
-import Navbar from './Navbar';
-import Footer from './Footer';
-import WhatsAppFloat from './WhatsAppFloat';
+import Navbar from './NavbarModern';
+import Footer from './FooterModern';
+import WhatsAppFloat from './WhatsAppFloatEnhanced';
 
 const Layout = ({ children }) => {
   return (

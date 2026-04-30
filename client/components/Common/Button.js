@@ -14,7 +14,7 @@ const Button = ({ children, onClick, type = 'button', variant = 'primary', class
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={\`\${baseClasses} \${variants[variant]} \${className} \${disabled ? 'opacity-50 cursor-not-allowed' : ''}\`}
+      className={`${baseClasses} ${variants[variant]} ${className} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
     >
       {children}
     </button>

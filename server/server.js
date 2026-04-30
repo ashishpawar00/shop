@@ -9,11 +9,22 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
+const configuredOrigins = String(process.env.FRONTEND_URL || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+const allowedOrigins = new Set(configuredOrigins);
+const localOriginPattern = /^https?:\/\/(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/i;
+
 // Import routes
 const authRoutes = require('./routes/auth');
+const cropDoctorRoutes = require('./routes/cropDoctor');
 const enquiryRoutes = require('./routes/enquiries');
 const productRoutes = require('./routes/products');
 const orderRoutes = require('./routes/orders');
+const postRoutes = require('./routes/posts');
+const { ensureLocalAdminUser } = require('./utils/ensureLocalAdmin');
 
 const app = express();
 
@@ -37,7 +48,13 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // CORS
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.has(origin) || localOriginPattern.test(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error('Origin not allowed by CORS'));
+  },
   credentials: true
 }));
 
@@ -46,11 +63,25 @@ mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('✅ MongoDB Atlas connected'))
   .catch(err => { console.error('❌ MongoDB error:', err.message); process.exit(1); });
 
+mongoose.connection.once('connected', () => {
+  ensureLocalAdminUser().catch((error) => {
+    console.error('Admin bootstrap error:', error.message);
+  });
+});
+
+mongoose.connection.asPromise().then(() => {
+  return ensureLocalAdminUser().catch((error) => {
+    console.error('Admin bootstrap error:', error.message);
+  });
+});
+
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/crop-doctor', cropDoctorRoutes);
 app.use('/api/enquiries', enquiryRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/posts', postRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

@@ -10,12 +10,16 @@ router.post('/signup', async (req, res) => {
   try {
     const { name, email, phone, password } = req.body;
 
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: 'Name, email and password are required' });
+    if (!name || !email || !phone || !password) {
+      return res.status(400).json({ message: 'Name, email, phone and password are required' });
     }
 
     if (password.length < 6) {
       return res.status(400).json({ message: 'Password must be at least 6 characters' });
+    }
+
+    if (!/^[6-9]\d{9}$/.test(String(phone).trim())) {
+      return res.status(400).json({ message: 'Please enter a valid 10-digit phone number' });
     }
 
     const existing = await User.findOne({ email: email.toLowerCase() });
@@ -26,7 +30,7 @@ router.post('/signup', async (req, res) => {
     const user = new User({
       name,
       email: email.toLowerCase(),
-      phone: phone || '',
+      phone: String(phone).trim(),
       password,
       role: 'customer'
     });

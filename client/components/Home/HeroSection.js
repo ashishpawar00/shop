@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { FiPhone, FiMessageCircle, FiMapPin } from 'react-icons/fi';
 
@@ -17,14 +18,14 @@ const HeroSection = () => {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <a 
-              href={\`tel:\${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}\`}
+              href={`tel:${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}`}
               className="btn-primary inline-flex items-center"
             >
               <FiPhone className="mr-2" />
               {t('hero_cta_call')}
             </a>
             <a 
-              href={\`https://wa.me/\${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}\`}
+              href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}`}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary inline-flex items-center"
@@ -32,13 +33,10 @@ const HeroSection = () => {
               <FiMessageCircle className="mr-2" />
               {t('hero_cta_whatsapp')}
             </a>
-            <a 
-              href="/contact"
-              className="btn-secondary inline-flex items-center"
-            >
+            <Link href="/contact" className="btn-secondary inline-flex items-center">
               <FiMapPin className="mr-2" />
               {t('hero_cta_visit')}
-            </a>
+            </Link>
           </div>
         </div>
       </div>

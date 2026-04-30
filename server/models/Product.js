@@ -18,7 +18,7 @@ const ProductSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ['seeds', 'fertilizers', 'pesticides', 'hardware'],
+    enum: ['seeds', 'fertilizers', 'pesticides', 'hardware', 'tools', 'irrigation'],
     required: true
   },
   subCategory: {
@@ -58,6 +58,11 @@ const ProductSchema = new mongoose.Schema({
   },
   price: {
     type: Number
+  },
+  stockQuantity: {
+    type: Number,
+    default: 0,
+    min: 0
   },
   unit: {
     type: String,

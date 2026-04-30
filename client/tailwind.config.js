@@ -7,6 +7,20 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        slate: {
+          base: 'rgb(var(--surface-base) / <alpha-value>)',
+          card: 'rgb(var(--surface-card) / <alpha-value>)',
+          hover: 'rgb(var(--surface-hover) / <alpha-value>)',
+        },
+        ink: {
+          primary: 'rgb(var(--text-primary) / <alpha-value>)',
+          secondary: 'rgb(var(--text-secondary) / <alpha-value>)',
+          muted: 'rgb(var(--text-muted) / <alpha-value>)',
+        },
+        line: {
+          soft: 'rgb(var(--line-soft) / <alpha-value>)',
+          strong: 'rgb(var(--line-strong) / <alpha-value>)',
+        },
         primary: {
           50: '#f0fdf4',
           100: '#dcfce7',
@@ -18,10 +32,19 @@ module.exports = {
           700: '#15803d',
           800: '#166534',
           900: '#14532d',
+        },
+        accent: {
+          emerald: '#10b981',
+          cyan: '#22d3ee',
         }
       },
       fontFamily: {
-        hindi: ['Noto Sans Devanagari', 'sans-serif'],
+        sans: ['Inter', '"Noto Sans Devanagari"', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', '"Noto Sans"', 'sans-serif'],
+        outfit: ['Outfit', '"Noto Sans Devanagari"', 'sans-serif'],
+        hindi: ['"Noto Sans Devanagari"', 'sans-serif'],
+      },
+      boxShadow: {
+        '2xl-soft': '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
       },
       keyframes: {
         fadeIn: {

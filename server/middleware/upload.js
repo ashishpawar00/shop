@@ -10,20 +10,23 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// Cloudinary storage for product images
-const storage = new CloudinaryStorage({
-    cloudinary,
-    params: {
-        folder: 'laxmi-krashi-kendra/products',
-        allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
-        transformation: [{ width: 800, height: 800, crop: 'limit', quality: 'auto' }]
-    }
-});
+function createUpload(folder = 'products') {
+    const storage = new CloudinaryStorage({
+        cloudinary,
+        params: {
+            folder: `laxmi-krashi-kendra/${folder}`,
+            allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+            transformation: [{ width: 1200, height: 1200, crop: 'limit', quality: 'auto' }]
+        }
+    });
 
-const upload = multer({
-    storage,
-    limits: { fileSize: 10 * 1024 * 1024 } // 10MB
-});
+    return multer({
+        storage,
+        limits: { fileSize: 10 * 1024 * 1024 } // 10MB
+    });
+}
+
+const upload = createUpload('products');
 
 // Delete image from Cloudinary
 const deleteImage = async (imageUrl) => {
@@ -39,4 +42,4 @@ const deleteImage = async (imageUrl) => {
     }
 };
 
-module.exports = { upload, deleteImage, cloudinary };
+module.exports = { upload, createUpload, deleteImage, cloudinary };

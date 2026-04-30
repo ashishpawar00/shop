@@ -97,8 +97,13 @@ router.post('/', auth, adminOnly, upload.single('image'), async (req, res) => {
     }
 
     // Parse numeric fields
-    if (productData.price) productData.price = Number(productData.price);
-    if (productData.inStock !== undefined) productData.inStock = productData.inStock === 'true' || productData.inStock === true;
+    if (productData.price !== undefined) productData.price = Number(productData.price);
+    if (productData.stockQuantity !== undefined) productData.stockQuantity = Math.max(0, Number(productData.stockQuantity) || 0);
+    if (productData.inStock !== undefined) {
+      productData.inStock = productData.inStock === 'true' || productData.inStock === true;
+    } else if (productData.stockQuantity !== undefined) {
+      productData.inStock = productData.stockQuantity > 0;
+    }
     if (productData.featured !== undefined) productData.featured = productData.featured === 'true' || productData.featured === true;
 
     const product = new Product(productData);
@@ -117,8 +122,13 @@ router.put('/:id', auth, adminOnly, upload.single('image'), async (req, res) => 
     if (typeof productData.cropType === 'string') {
       productData.cropType = productData.cropType.split(',').map(s => s.trim()).filter(Boolean);
     }
-    if (productData.price) productData.price = Number(productData.price);
-    if (productData.inStock !== undefined) productData.inStock = productData.inStock === 'true' || productData.inStock === true;
+    if (productData.price !== undefined) productData.price = Number(productData.price);
+    if (productData.stockQuantity !== undefined) productData.stockQuantity = Math.max(0, Number(productData.stockQuantity) || 0);
+    if (productData.inStock !== undefined) {
+      productData.inStock = productData.inStock === 'true' || productData.inStock === true;
+    } else if (productData.stockQuantity !== undefined) {
+      productData.inStock = productData.stockQuantity > 0;
+    }
     if (productData.featured !== undefined) productData.featured = productData.featured === 'true' || productData.featured === true;
 
     // Handle new image upload

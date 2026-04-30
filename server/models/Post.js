@@ -8,7 +8,7 @@ const PostSchema = new mongoose.Schema({
   },
   titleHindi: {
     type: String,
-    required: true
+    default: ''
   },
   content: {
     type: String,
@@ -16,7 +16,7 @@ const PostSchema = new mongoose.Schema({
   },
   contentHindi: {
     type: String,
-    required: true
+    default: ''
   },
   category: {
     type: String,
@@ -32,6 +32,11 @@ const PostSchema = new mongoose.Schema({
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
+  },
+  status: {
+    type: String,
+    enum: ['draft', 'published', 'archived'],
+    default: 'draft'
   },
   isPublished: {
     type: Boolean,
@@ -52,6 +57,12 @@ const PostSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
+});
+
+PostSchema.pre('save', function updatePostState(next) {
+  this.updatedAt = new Date();
+  this.isPublished = this.status === 'published';
+  next();
 });
 
 module.exports = mongoose.model('Post', PostSchema);
