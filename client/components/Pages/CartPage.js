@@ -19,7 +19,7 @@ export default function CartPage() {
           <title>Cart | Laxmi Krishi Kendra</title>
         </Head>
 
-        <div className="flex min-h-[60vh] flex-col items-center justify-center p-8">
+        <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 pb-12 pt-24 text-center sm:p-8 sm:pt-28">
           <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-100 text-green-700">
             <FiShoppingCart size={34} />
           </div>
@@ -45,8 +45,8 @@ export default function CartPage() {
         <title>Cart | Laxmi Krishi Kendra</title>
       </Head>
 
-      <div className="mx-auto max-w-5xl px-4 py-8">
-        <h1 className="mb-8 flex items-center gap-3 text-3xl font-bold text-gray-800">
+      <div className="mx-auto max-w-5xl px-4 pb-16 pt-24 sm:py-8 sm:pt-28">
+        <h1 className="mb-6 flex flex-wrap items-center gap-3 text-2xl font-bold text-gray-800 sm:mb-8 sm:text-3xl">
           <FiShoppingCart className="text-green-600" />
           Your Cart
           <span className="rounded-full bg-green-100 px-3 py-1 text-sm text-green-700">{cart.length} items</span>
@@ -55,7 +55,8 @@ export default function CartPage() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div className="space-y-4 lg:col-span-2">
             {cart.map((item) => (
-              <div key={item.id} className="flex items-center gap-4 rounded-xl border border-gray-200 bg-white p-4 transition hover:shadow-md">
+              <div key={item.id} className="rounded-xl border border-gray-200 bg-white p-4 transition hover:shadow-md">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                 <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-3xl">
                   {item.image?.startsWith('http') ? (
                     <img src={item.image} alt={item.name} className="h-full w-full rounded-lg object-cover" />
@@ -86,13 +87,14 @@ export default function CartPage() {
                   </button>
                 </div>
 
-                <div className="min-w-[70px] text-right">
+                <div className="min-w-[70px] text-left sm:text-right">
                   <p className="font-bold text-gray-800">Rs {item.price * item.quantity}</p>
                 </div>
 
-                <button onClick={() => removeFromCart(item.id)} className="p-2 text-red-400 transition hover:text-red-600">
+                <button onClick={() => removeFromCart(item.id)} className="self-start p-2 text-red-400 transition hover:text-red-600 sm:self-auto">
                   <FiTrash2 size={16} />
                 </button>
+                </div>
               </div>
             ))}
 
@@ -101,7 +103,7 @@ export default function CartPage() {
             </button>
           </div>
 
-          <div className="sticky top-24 h-fit rounded-2xl border border-gray-200 bg-white p-6">
+          <div className="h-fit rounded-2xl border border-gray-200 bg-white p-5 sm:p-6 lg:sticky lg:top-24">
             <h2 className="mb-4 text-lg font-bold text-gray-800">Order Summary</h2>
 
             <div className="space-y-3 text-sm">

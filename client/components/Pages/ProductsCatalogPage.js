@@ -227,16 +227,16 @@ export default function ProductsCatalogPage() {
       </Head>
 
       <div className="bg-slate-base text-ink-primary">
-        <main className="mx-auto max-w-7xl px-4 pb-20 pt-28 sm:px-6 lg:px-8 lg:pt-32">
-          <motion.section initial="hidden" animate="visible" variants={fadeUp} transition={{ duration: 0.45 }} className="rounded-[2rem] border border-line-soft/10 bg-slate-card/78 px-6 py-10 shadow-xl shadow-black/10 backdrop-blur-xl sm:px-10 sm:py-14">
+        <main className="mx-auto max-w-7xl px-4 pb-16 pt-24 sm:px-6 lg:px-8 lg:pb-20 lg:pt-32">
+          <motion.section initial="hidden" animate="visible" variants={fadeUp} transition={{ duration: 0.45 }} className="rounded-[2rem] border border-line-soft/10 bg-slate-card/78 px-5 py-8 shadow-xl shadow-black/10 backdrop-blur-xl sm:px-10 sm:py-14">
             <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.24em] text-accent-emerald">{copy.eyebrow}</p>
-                <h1 className={`mt-5 max-w-4xl font-outfit text-4xl font-semibold tracking-tight text-ink-primary sm:text-5xl lg:text-6xl ${isHindi ? 'font-hindi' : ''}`}>{copy.headline}</h1>
-                <p className={`mt-5 max-w-3xl text-base leading-8 text-ink-muted sm:text-lg ${isHindi ? 'font-hindi' : ''}`}>{copy.intro}</p>
+                <h1 className={`mt-4 max-w-4xl font-outfit text-3xl font-semibold tracking-tight text-ink-primary sm:mt-5 sm:text-5xl lg:text-6xl ${isHindi ? 'font-hindi' : ''}`}>{copy.headline}</h1>
+                <p className={`mt-4 max-w-3xl text-sm leading-7 text-ink-muted sm:mt-5 sm:text-lg sm:leading-8 ${isHindi ? 'font-hindi' : ''}`}>{copy.intro}</p>
               </div>
 
-              <div className="rounded-[1.75rem] border border-line-soft/10 bg-slate-base/72 p-4 shadow-lg shadow-black/5">
+              <div className="rounded-[1.75rem] border border-line-soft/10 bg-slate-base/72 p-3.5 shadow-lg shadow-black/5 sm:p-4">
                 <label className="flex items-center gap-3 rounded-[1.25rem] bg-slate-card/80 px-4 py-4">
                   <FiSearch className="text-accent-emerald" />
                   <input
@@ -250,11 +250,11 @@ export default function ProductsCatalogPage() {
                   />
                 </label>
 
-                <div className="mt-4 flex items-center justify-between gap-4">
+                <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                   <p className="text-xs font-black uppercase tracking-[0.2em] text-ink-muted">
                     {totalCount} {copy.itemsAvailable}
                   </p>
-                  <div className="flex items-center gap-2 rounded-full border border-line-soft/10 bg-slate-card/80 px-3 py-2 text-sm text-ink-secondary">
+                  <div className="flex w-full items-center gap-2 rounded-full border border-line-soft/10 bg-slate-card/80 px-3 py-2 text-sm text-ink-secondary sm:w-auto">
                     <FiFilter className="text-accent-emerald" />
                     <select
                       value={sortBy}
@@ -275,7 +275,7 @@ export default function ProductsCatalogPage() {
             </div>
           </motion.section>
 
-          <section className="mt-8 flex flex-wrap gap-3">
+          <section className="-mx-1 mt-8 flex gap-3 overflow-x-auto px-1 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
             {categories.map(item => {
               const Icon = item.icon;
               const active = category === item.value;
@@ -287,7 +287,7 @@ export default function ProductsCatalogPage() {
                     setCategory(item.value);
                     setPage(1);
                   }}
-                  className={`inline-flex items-center rounded-full border px-4 py-3 text-sm font-bold transition ${
+                  className={`inline-flex shrink-0 items-center rounded-full border px-4 py-3 text-sm font-bold transition ${
                     active
                       ? 'border-accent-emerald bg-accent-emerald text-white'
                       : 'border-line-soft/10 bg-slate-card/76 text-ink-secondary hover:border-accent-emerald/30 hover:text-ink-primary'
@@ -318,7 +318,7 @@ export default function ProductsCatalogPage() {
               </button>
             </section>
           ) : (
-            <section className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            <section className="mt-8 grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
               {products.map((product, index) => {
                 const justAdded = addedId === product._id;
                 const categoryIcon = categoryIconMap[product.category] || FiPackage;
@@ -338,7 +338,7 @@ export default function ProductsCatalogPage() {
                     viewport={{ once: true, amount: 0.15 }}
                     variants={fadeUp}
                     transition={{ duration: 0.4, delay: index * 0.03 }}
-                    className="group rounded-[1.75rem] border border-line-soft/10 bg-slate-card/76 p-5 shadow-xl shadow-black/8 backdrop-blur-xl"
+                    className="group rounded-[1.75rem] border border-line-soft/10 bg-slate-card/76 p-4 shadow-xl shadow-black/8 backdrop-blur-xl sm:p-5"
                   >
                     <Link
                       href={detailsHref}
@@ -356,19 +356,19 @@ export default function ProductsCatalogPage() {
                       </div>
                     </Link>
 
-                    <div className="mt-5 flex items-center justify-between gap-3">
+                    <div className="mt-4 flex items-center justify-between gap-3 sm:mt-5">
                       <span className="inline-flex items-center rounded-full border border-accent-emerald/15 bg-accent-emerald/8 px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.2em] text-accent-emerald">
                         {product.category || copy.all}
                       </span>
-                      <span className="font-outfit text-2xl font-bold text-ink-primary">Rs {product.price}</span>
+                      <span className="font-outfit text-xl font-bold text-ink-primary sm:text-2xl">Rs {product.price}</span>
                     </div>
 
-                    <h2 className={`mt-4 text-xl font-semibold text-ink-primary ${isHindi ? 'font-hindi' : ''}`}>
+                    <h2 className={`mt-4 text-lg font-semibold text-ink-primary sm:text-xl ${isHindi ? 'font-hindi' : ''}`}>
                       <Link href={detailsHref} className="transition hover:text-accent-emerald">
                         {localizedName}
                       </Link>
                     </h2>
-                    <p className={`mt-3 min-h-[84px] text-sm leading-7 text-ink-muted ${isHindi ? 'font-hindi' : ''}`}>
+                    <p className={`mt-3 min-h-[72px] text-sm leading-6 text-ink-muted sm:min-h-[84px] sm:leading-7 ${isHindi ? 'font-hindi' : ''}`}>
                       {localizedDescription}
                     </p>
 

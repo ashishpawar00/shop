@@ -117,6 +117,23 @@ export default function NavbarModern() {
     return () => window.removeEventListener('resize', closeDrawer);
   }, [isOpen]);
 
+  useEffect(() => {
+    if (typeof document === 'undefined') {
+      return undefined;
+    }
+
+    const { body } = document;
+    const previousOverflow = body.style.overflow;
+
+    if (isOpen) {
+      body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      body.style.overflow = previousOverflow;
+    };
+  }, [isOpen]);
+
   const navItems = useMemo(
     () => [
       { label: labels.home, href: '/' },
@@ -143,18 +160,18 @@ export default function NavbarModern() {
     <nav
       className={`fixed top-0 z-50 w-full transition-all duration-500 ${
         scrolled
-          ? 'h-20 bg-slate-base/82 shadow-2xl shadow-black/12 backdrop-blur-2xl'
-          : 'h-24 bg-gradient-to-b from-slate-base/45 via-slate-base/18 to-transparent'
+          ? 'h-16 bg-slate-base/82 shadow-2xl shadow-black/12 backdrop-blur-2xl md:h-20'
+          : 'h-20 bg-gradient-to-b from-slate-base/45 via-slate-base/18 to-transparent md:h-24'
       }`}
     >
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="group flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-emerald text-xl font-bold text-white shadow-lg shadow-emerald-500/20 transition-transform group-hover:scale-110">
+        <Link href="/" className="group flex min-w-0 items-center gap-2.5 sm:gap-3">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-accent-emerald text-xl font-bold text-white shadow-lg shadow-emerald-500/20 transition-transform group-hover:scale-110">
             L
           </div>
-          <div>
-            <span className="block font-outfit text-xl font-bold leading-none tracking-tight text-ink-primary">Laxmi Krashi</span>
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-accent-emerald opacity-80">Kendra</span>
+          <div className="min-w-0">
+            <span className="block truncate font-outfit text-lg font-bold leading-none tracking-tight text-ink-primary sm:text-xl">Laxmi Krashi</span>
+            <span className="text-[9px] font-black uppercase tracking-[0.18em] text-accent-emerald opacity-80 sm:text-[10px]">Kendra</span>
           </div>
         </Link>
 
@@ -247,7 +264,7 @@ export default function NavbarModern() {
             />
 
             <motion.aside
-              className="fixed inset-y-0 right-0 z-[60] flex w-[min(88vw,360px)] flex-col border-l border-line-soft/10 bg-slate-base/96 px-5 pb-6 pt-5 shadow-2xl shadow-black/18 backdrop-blur-2xl md:hidden"
+              className="fixed inset-y-0 right-0 z-[60] flex w-[min(92vw,360px)] flex-col border-l border-line-soft/10 bg-slate-base/96 px-4 pb-5 pt-4 shadow-2xl shadow-black/18 backdrop-blur-2xl md:hidden"
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
@@ -268,13 +285,13 @@ export default function NavbarModern() {
                 </button>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-3 overflow-y-auto pr-1">
                 {navItems.map(item => (
                   <Link
                     key={item.href}
                     href={item.href}
                     onClick={() => setIsOpen(false)}
-                    className={`flex items-center justify-between rounded-[1.5rem] px-4 py-4 font-outfit text-base font-bold ${
+                    className={`flex items-center justify-between rounded-[1.35rem] px-4 py-3.5 font-outfit text-[15px] font-bold ${
                       item.highlight
                         ? 'bg-accent-emerald text-white shadow-lg shadow-emerald-500/20'
                         : 'border border-line-soft/10 bg-slate-card/88 text-ink-primary'
@@ -289,7 +306,7 @@ export default function NavbarModern() {
                     key={item.href}
                     href={item.href}
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center justify-between rounded-[1.5rem] border border-line-soft/10 bg-slate-card/88 px-4 py-4 font-outfit text-base font-bold text-ink-primary"
+                    className="flex items-center justify-between rounded-[1.35rem] border border-line-soft/10 bg-slate-card/88 px-4 py-3.5 font-outfit text-[15px] font-bold text-ink-primary"
                   >
                     {item.label}
                     <FiChevronRight className="text-ink-muted" />
@@ -297,7 +314,7 @@ export default function NavbarModern() {
                 ))}
               </div>
 
-              <div className="mt-6 grid grid-cols-2 gap-3">
+              <div className="mt-5 grid grid-cols-2 gap-3">
                 <LanguageToggle language={language} changeLanguage={changeLanguage} mobile />
                 <div className="flex items-center justify-end gap-3 rounded-full border border-line-soft/10 bg-slate-card/88 px-3">
                   <span className="text-xs font-black uppercase tracking-[0.18em] text-ink-muted">Theme</span>
@@ -305,7 +322,7 @@ export default function NavbarModern() {
                 </div>
               </div>
 
-              <div className="mt-6 grid grid-cols-2 gap-3">
+              <div className="mt-5 grid grid-cols-2 gap-3">
                 {user && isAdmin ? (
                   <Link
                     href="/admin/dashboard"
@@ -353,7 +370,7 @@ export default function NavbarModern() {
                 )}
               </div>
 
-              <div className="mt-auto rounded-[1.75rem] border border-line-soft/10 bg-slate-card/88 p-4">
+              <div className="mt-5 rounded-[1.5rem] border border-line-soft/10 bg-slate-card/88 p-4">
                 <p className="text-xs font-black uppercase tracking-[0.24em] text-accent-emerald">{labels.supportTitle}</p>
                 <p className="mt-3 font-outfit text-lg font-bold text-ink-primary">{labels.supportHeading}</p>
                 <p className="mt-2 text-sm leading-relaxed text-ink-muted">{labels.supportBody}</p>

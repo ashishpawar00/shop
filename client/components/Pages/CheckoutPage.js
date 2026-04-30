@@ -90,14 +90,14 @@ export default function CheckoutPage() {
 
   if (authLoading) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center">
+      <div className="flex min-h-[60vh] items-center justify-center px-4 pt-24 sm:pt-28">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-green-600 border-t-transparent" />
       </div>
     );
   }
 
   if (!user) {
-    return <div className="flex min-h-[60vh] items-center justify-center text-gray-500">Redirecting to login...</div>;
+    return <div className="flex min-h-[60vh] items-center justify-center px-4 pt-24 text-center text-gray-500 sm:pt-28">Redirecting to login...</div>;
   }
 
   return (
@@ -106,16 +106,16 @@ export default function CheckoutPage() {
         <title>Checkout | Laxmi Krishi Kendra</title>
       </Head>
 
-      <div className="mx-auto max-w-3xl px-4 py-8">
-        <div className="mb-8 flex items-center justify-center gap-4">
+      <div className="mx-auto max-w-3xl px-4 pb-16 pt-24 sm:py-8 sm:pt-28">
+        <div className="mb-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
           {[
             { n: 1, label: 'Address', icon: <FiMapPin /> },
             { n: 2, label: 'Payment', icon: <FiCreditCard /> },
             { n: 3, label: 'Done', icon: <FiCheckCircle /> },
           ].map((item, index) => (
             <div key={item.n} className="flex items-center gap-4">
-              {index > 0 ? <div className={`h-0.5 w-12 ${step >= item.n ? 'bg-green-500' : 'bg-gray-200'}`} /> : null}
-              <div className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ${step >= item.n ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400'}`}>
+              {index > 0 ? <div className={`hidden h-0.5 w-12 sm:block ${step >= item.n ? 'bg-green-500' : 'bg-gray-200'}`} /> : null}
+              <div className={`flex items-center gap-2 rounded-full px-3 py-2 text-xs font-semibold sm:px-4 sm:text-sm ${step >= item.n ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-400'}`}>
                 {item.icon} {item.label}
               </div>
             </div>
@@ -125,7 +125,7 @@ export default function CheckoutPage() {
         {error ? <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-red-700">{error}</div> : null}
 
         {step === 1 ? (
-          <div className="rounded-2xl border border-gray-200 bg-white p-6">
+          <div className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
             <h2 className="mb-6 flex items-center gap-2 text-xl font-bold text-gray-800">
               <FiMapPin className="text-green-600" /> Delivery Address
             </h2>
@@ -169,7 +169,7 @@ export default function CheckoutPage() {
         ) : null}
 
         {step === 2 ? (
-          <div className="rounded-2xl border border-gray-200 bg-white p-6">
+          <div className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6">
             <h2 className="mb-6 flex items-center gap-2 text-xl font-bold text-gray-800">
               <FiCreditCard className="text-green-600" /> Payment Method
             </h2>
@@ -246,7 +246,7 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex flex-col gap-3 sm:flex-row">
               <button onClick={() => setStep(1)} className="flex-1 rounded-xl border border-gray-300 py-3 font-semibold text-gray-700 transition hover:bg-gray-50">
                 Back
               </button>
@@ -262,7 +262,7 @@ export default function CheckoutPage() {
         ) : null}
 
         {step === 3 && orderResult ? (
-          <div className="rounded-2xl border border-gray-200 bg-white p-8 text-center">
+          <div className="rounded-2xl border border-gray-200 bg-white p-6 text-center sm:p-8">
             <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
               <FiCheckCircle size={40} className="text-green-600" />
             </div>
@@ -274,7 +274,7 @@ export default function CheckoutPage() {
               <p className="text-2xl font-bold text-green-700">{orderResult.orderNumber}</p>
             </div>
 
-            <div className="mb-6 grid grid-cols-2 gap-4 text-sm">
+            <div className="mb-6 grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
               <div className="rounded-lg bg-gray-50 p-3">
                 <p className="text-gray-500">Amount</p>
                 <p className="text-lg font-bold">Rs {orderResult.totalAmount}</p>
@@ -285,7 +285,7 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            <div className="flex justify-center gap-3">
+            <div className="flex flex-col justify-center gap-3 sm:flex-row">
               <button onClick={() => router.push('/my-orders')} className="rounded-xl bg-green-600 px-6 py-3 font-semibold text-white transition hover:bg-green-700">
                 View My Orders
               </button>

@@ -227,28 +227,28 @@ export default function CropDoctorPage() {
         <title>Crop Doctor | Laxmi Krashi Kendra</title>
       </Head>
 
-      <div className="min-h-screen bg-slate-base px-4 pb-20 pt-32 text-ink-primary sm:px-6">
+      <div className="min-h-screen bg-slate-base px-4 pb-16 pt-24 text-ink-primary sm:px-6 sm:pb-20 sm:pt-32">
         <div className="fixed inset-0 -z-10 overflow-hidden">
           <div className="absolute left-[-10%] top-[-10%] h-[28rem] w-[28rem] rounded-full bg-emerald-500/10 blur-[120px]" />
           <div className="absolute bottom-[-10%] right-[-10%] h-[24rem] w-[24rem] rounded-full bg-cyan-500/10 blur-[120px]" />
         </div>
 
         <div className="mx-auto max-w-6xl">
-          <div className="mb-10 text-center">
+          <div className="mb-8 text-center sm:mb-10">
             <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-emerald-300">
               <FiShield size={14} />
               Crop diagnostic assistant
             </div>
-            <h1 className={`mt-6 text-4xl font-black tracking-tight sm:text-6xl ${strongTextClass}`}>
+            <h1 className={`mt-5 text-3xl font-black tracking-tight sm:mt-6 sm:text-5xl lg:text-6xl ${strongTextClass}`}>
               Diagnose crop issues with a real backend workflow.
             </h1>
-            <p className={`mx-auto mt-5 max-w-3xl text-lg leading-relaxed ${mutedClass}`}>
+            <p className={`mx-auto mt-4 max-w-3xl text-base leading-relaxed sm:mt-5 sm:text-lg ${mutedClass}`}>
               Upload or capture a crop photo, choose the crop and visible symptoms, and the diagnosis engine returns a consistent recommendation instead of a random result.
             </p>
           </div>
 
-          <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
-            <section className={`rounded-[2.5rem] p-6 sm:p-8 ${shellCardClass}`}>
+          <div className="grid gap-6 sm:gap-8 lg:grid-cols-[1.05fr_0.95fr]">
+            <section className={`rounded-[2.25rem] p-5 sm:rounded-[2.5rem] sm:p-8 ${shellCardClass}`}>
               <h2 className={`text-2xl font-black ${strongTextClass}`}>1. Add field details</h2>
               <p className={`mt-2 text-sm ${mutedClass}`}>
                 Select the crop and the symptoms you can clearly see. This gives the engine enough signal to produce a useful result.
@@ -286,7 +286,7 @@ export default function CropDoctorPage() {
                 </div>
               </div>
 
-              <div className="mt-8">
+              <div className="mt-7 sm:mt-8">
                 <label className={`mb-3 block text-sm font-semibold ${labelClass}`}>Visible symptoms</label>
                 <div className="flex flex-wrap gap-3">
                   {SYMPTOM_OPTIONS.map((option) => {
@@ -324,7 +324,7 @@ export default function CropDoctorPage() {
               </div>
             </section>
 
-            <section className={`rounded-[2.5rem] p-6 sm:p-8 ${darkFeatureCardClass}`}>
+            <section className={`rounded-[2.25rem] p-5 sm:rounded-[2.5rem] sm:p-8 ${darkFeatureCardClass}`}>
               <h2 className={`text-2xl font-black ${strongTextClass}`}>2. Add a crop photo</h2>
               <p className={`mt-2 text-sm ${mutedClass}`}>
                 A photo is optional for this flow but helps you document what you saw in the field.
@@ -414,12 +414,12 @@ export default function CropDoctorPage() {
                 </div>
               ) : null}
 
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <button
                   type="button"
                   onClick={runAnalysis}
                   disabled={analyzing}
-                  className="inline-flex items-center gap-2 rounded-2xl bg-emerald-500 px-6 py-4 text-sm font-black uppercase tracking-[0.18em] text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-500 px-6 py-4 text-sm font-black uppercase tracking-[0.18em] text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                 >
                   {analyzing ? <FiClock size={16} className="animate-spin" /> : <FiSearch size={16} />}
                   {analyzing ? 'Analyzing...' : 'Run diagnosis'}
@@ -428,7 +428,7 @@ export default function CropDoctorPage() {
                 <button
                   type="button"
                   onClick={resetAnalysis}
-                  className={`inline-flex items-center gap-2 rounded-2xl px-6 py-4 text-sm font-black uppercase tracking-[0.18em] transition ${ghostButtonClass}`}
+                  className={`inline-flex w-full items-center justify-center gap-2 rounded-2xl px-6 py-4 text-sm font-black uppercase tracking-[0.18em] transition sm:w-auto ${ghostButtonClass}`}
                 >
                   <FiRefreshCcw size={16} />
                   Reset
@@ -438,7 +438,7 @@ export default function CropDoctorPage() {
           </div>
 
           {result ? (
-            <section className={`mt-8 rounded-[2.5rem] p-6 sm:p-8 ${resultPanelClass}`}>
+            <section className={`mt-8 rounded-[2.25rem] p-5 sm:rounded-[2.5rem] sm:p-8 ${resultPanelClass}`}>
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
                   <div className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-black uppercase tracking-[0.18em] ${severityTone(result.diagnosis.severity)}`}>
@@ -520,7 +520,7 @@ export default function CropDoctorPage() {
                 </div>
               </div>
 
-              <div className="mt-8 rounded-[1.75rem] border border-amber-500/20 bg-amber-500/10 p-5">
+              <div className="mt-8 rounded-[1.5rem] border border-amber-500/20 bg-amber-500/10 p-4 sm:rounded-[1.75rem] sm:p-5">
                 <div className="flex gap-3">
                   <FiInfo className="mt-0.5 text-amber-300" size={18} />
                   <p className="text-sm leading-relaxed text-amber-100">{result.disclaimer}</p>
@@ -542,7 +542,7 @@ export default function CropDoctorPage() {
                 </div>
 
                 {result.recommendedProducts?.length ? (
-                  <div className="mt-6 grid gap-4 md:grid-cols-3">
+                  <div className="mt-6 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
                     {result.recommendedProducts.map((product) => (
                       <div key={product.id} className={`overflow-hidden rounded-[1.75rem] ${darkFeatureCardClass}`}>
                         <img src={product.image} alt={product.name} className="aspect-[4/3] w-full object-cover" />
@@ -564,19 +564,19 @@ export default function CropDoctorPage() {
                 )}
               </div>
 
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <a
                   href={`https://wa.me/${WHATSAPP_NUMBER}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-2xl bg-emerald-500 px-5 py-4 text-sm font-black uppercase tracking-[0.18em] text-white transition hover:bg-emerald-600"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-500 px-5 py-4 text-sm font-black uppercase tracking-[0.18em] text-white transition hover:bg-emerald-600 sm:w-auto"
                 >
                   <FiMessageCircle size={16} />
                   Ask on WhatsApp
                 </a>
                 <a
                   href={`tel:${PHONE_NUMBER}`}
-                  className={`inline-flex items-center gap-2 rounded-2xl px-5 py-4 text-sm font-black uppercase tracking-[0.18em] transition ${ghostButtonClass}`}
+                  className={`inline-flex w-full items-center justify-center gap-2 rounded-2xl px-5 py-4 text-sm font-black uppercase tracking-[0.18em] transition sm:w-auto ${ghostButtonClass}`}
                 >
                   <FiFileText size={16} />
                   Call store

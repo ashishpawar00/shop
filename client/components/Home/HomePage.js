@@ -515,7 +515,7 @@ export default function HomePage() {
         <meta name="description" content={copy.metaDescription} />
       </Head>
 
-      <header className="relative overflow-hidden bg-slate-base pb-20 pt-28 md:pb-24 md:pt-36">
+      <header className="relative overflow-hidden bg-slate-base pb-14 pt-24 md:pb-24 md:pt-36">
         <div className="absolute inset-0">
           {enableHeroEffects ? (
             <SoftAurora
@@ -538,14 +538,14 @@ export default function HomePage() {
           />
         </div>
 
-        <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-16 px-4 sm:px-6 lg:grid-cols-[1.08fr_0.92fr] lg:px-8">
+        <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-10 px-4 sm:gap-12 sm:px-6 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16 lg:px-8">
           <div>
-            <div className="mb-8 inline-flex items-center rounded-full border border-line-soft/10 bg-slate-card/80 px-5 py-2 text-xs font-black uppercase tracking-[0.22em] text-accent-emerald shadow-xl backdrop-blur">
+            <div className="mb-6 inline-flex items-center rounded-full border border-line-soft/10 bg-slate-card/80 px-4 py-2 text-[11px] font-black uppercase tracking-[0.18em] text-accent-emerald shadow-xl backdrop-blur sm:mb-8 sm:px-5 sm:text-xs sm:tracking-[0.22em]">
               <BlurText text={copy.badge} animateBy="words" className="leading-none" />
             </div>
 
             <h1
-              className={`mb-8 ${displayFontClass} text-4xl font-extrabold leading-[1.05] text-ink-primary md:text-6xl lg:text-7xl ${
+              className={`mb-6 ${displayFontClass} text-3xl font-extrabold leading-[1.05] text-ink-primary sm:text-5xl md:mb-8 md:text-6xl lg:text-7xl ${
                 isHindi ? 'tracking-normal' : 'tracking-tight'
               }`}
             >
@@ -553,21 +553,21 @@ export default function HomePage() {
               <span className="block text-accent-emerald">{heroCopy.heroTitleAccent}</span>
             </h1>
 
-            <p className="max-w-2xl text-lg leading-relaxed text-ink-secondary md:text-xl">
+            <p className="max-w-2xl text-base leading-relaxed text-ink-secondary sm:text-lg md:text-xl">
               {heroCopy.heroDescription}
             </p>
 
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+            <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:gap-4">
               <Link
                 href="/crop-doctor"
-                className="inline-flex h-14 items-center justify-center rounded-full bg-accent-emerald px-10 text-base font-black text-white shadow-[0_24px_60px_rgba(16,185,129,0.28)] transition-all duration-300 hover:scale-[1.02] hover:bg-emerald-600 active:scale-95"
+                className="inline-flex h-13 w-full items-center justify-center rounded-full bg-accent-emerald px-6 text-sm font-black text-white shadow-[0_24px_60px_rgba(16,185,129,0.28)] transition-all duration-300 hover:scale-[1.02] hover:bg-emerald-600 active:scale-95 sm:h-14 sm:w-auto sm:px-10 sm:text-base"
               >
                 {heroCopy.primaryCta}
                 <FiArrowRight className="ml-2" />
               </Link>
               <Link
                 href="/products"
-                className="inline-flex h-14 items-center justify-center rounded-full border border-accent-emerald/65 bg-transparent px-10 text-base font-bold text-accent-emerald transition-all duration-300 hover:bg-accent-emerald/10 hover:text-accent-emerald"
+                className="inline-flex h-13 w-full items-center justify-center rounded-full border border-accent-emerald/65 bg-transparent px-6 text-sm font-bold text-accent-emerald transition-all duration-300 hover:bg-accent-emerald/10 hover:text-accent-emerald sm:h-14 sm:w-auto sm:px-10 sm:text-base"
               >
                 {heroCopy.secondaryCta}
               </Link>
@@ -583,8 +583,8 @@ export default function HomePage() {
               fillOpacity={supportFillOpacity}
               colors={['#10b981', '#22d3ee', '#86efac']}
             >
-              <div className="p-6 md:p-8">
-                <div className="mb-6 flex items-center justify-between">
+              <div className="p-5 sm:p-6 md:p-8">
+                <div className="mb-5 flex items-start justify-between gap-4 sm:mb-6">
                   <div>
                     <p className="text-xs font-black uppercase tracking-[0.24em] text-accent-emerald">
                       {copy.lanyardEyebrow}
@@ -593,8 +593,8 @@ export default function HomePage() {
                       {heroCopy.supportDesk}
                     </p>
                   </div>
-                  <div className="rounded-2xl bg-slate-base p-3 text-accent-emerald shadow-lg">
-                    <FiShield size={22} />
+                  <div className="rounded-2xl bg-slate-base p-2.5 text-accent-emerald shadow-lg sm:p-3">
+                    <FiShield size={20} />
                   </div>
                 </div>
 
@@ -612,12 +612,12 @@ export default function HomePage() {
 
       <TrustStatsBar items={trustStats} />
 
-      <section className="bg-slate-card py-12">
+      <section className="bg-slate-card py-10 sm:py-12">
         <div className="mx-auto grid max-w-7xl gap-5 px-4 sm:px-6 lg:grid-cols-3 lg:px-8">
           {copy.quickHighlights.map(item => (
             <div
               key={item.title}
-              className="rounded-[1.75rem] border border-line-soft/10 bg-slate-base/80 p-6 shadow-xl shadow-black/10"
+              className="rounded-[1.75rem] border border-line-soft/10 bg-slate-base/80 p-5 shadow-xl shadow-black/10 sm:p-6"
             >
               <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-card text-xl text-accent-emerald">
                 {item.icon}
@@ -629,16 +629,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-slate-base py-24">
+      <section className="bg-slate-base py-16 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-14 text-center">
+          <div className="mb-10 text-center sm:mb-14">
             <ScrollFloat
               containerClassName="mx-auto mb-6"
-              textClassName={`${displayFontClass} text-3xl font-bold text-ink-primary md:text-5xl`}
+              textClassName={`${displayFontClass} text-2xl font-bold text-ink-primary sm:text-3xl md:text-5xl`}
             >
               {copy.servicesHeading}
             </ScrollFloat>
-            <p className="mx-auto max-w-3xl text-lg leading-relaxed text-ink-muted">
+            <p className="mx-auto max-w-3xl text-base leading-relaxed text-ink-muted sm:text-lg">
               {copy.servicesDescription}
             </p>
           </div>
@@ -647,16 +647,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-slate-card py-24">
+      <section className="bg-slate-card py-16 sm:py-20 lg:py-24">
         <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[0.84fr_1.16fr] lg:px-8">
           <div className="lg:sticky lg:top-28">
             <div className="mb-4 inline-flex rounded-full bg-slate-base px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-accent-cyan">
               {copy.processEyebrow}
             </div>
-            <h2 className={`${displayFontClass} text-3xl font-bold leading-tight text-ink-primary md:text-5xl`}>
+            <h2 className={`${displayFontClass} text-2xl font-bold leading-tight text-ink-primary sm:text-3xl md:text-5xl`}>
               {copy.processTitle}
             </h2>
-            <p className="mt-6 text-lg leading-relaxed text-ink-muted">{copy.processDescription}</p>
+            <p className="mt-4 text-base leading-relaxed text-ink-muted sm:mt-6 sm:text-lg">{copy.processDescription}</p>
           </div>
 
           <div className="space-y-6">
@@ -669,7 +669,7 @@ export default function HomePage() {
                 fillOpacity={0.18}
                 colors={['#10b981', '#34d399', '#22d3ee']}
               >
-                <div className="grid items-start gap-5 p-6 md:grid-cols-[auto_1fr_auto] md:p-8">
+                <div className="grid items-start gap-4 p-5 sm:gap-5 sm:p-6 md:grid-cols-[auto_1fr_auto] md:p-8">
                   <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-card text-lg font-black text-accent-emerald">
                     {step.step}
                   </div>
@@ -687,20 +687,20 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-slate-base py-24">
+      <section className="bg-slate-base py-16 sm:py-20 lg:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-14 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div className="mb-10 flex flex-col gap-5 md:mb-14 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
               <p className="mb-4 text-xs font-black uppercase tracking-[0.22em] text-accent-emerald">
                 Featured Inputs
               </p>
-              <h2 className={`${displayFontClass} text-3xl font-bold leading-tight text-ink-primary md:text-5xl`}>
+              <h2 className={`${displayFontClass} text-2xl font-bold leading-tight text-ink-primary sm:text-3xl md:text-5xl`}>
                 {copy.featuredTitle}
               </h2>
-              <p className="mt-5 text-lg leading-relaxed text-ink-muted">{copy.featuredDescription}</p>
+              <p className="mt-4 text-base leading-relaxed text-ink-muted sm:mt-5 sm:text-lg">{copy.featuredDescription}</p>
             </div>
 
-            <Link href="/products" className="btn-secondary h-12 px-8 text-sm">
+            <Link href="/products" className="btn-secondary h-12 w-full px-8 text-sm sm:w-auto">
               {copy.productsCta}
               <FiArrowRight className="ml-2" />
             </Link>
@@ -789,7 +789,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-slate-card py-24">
+      <section className="relative overflow-hidden bg-slate-card py-16 sm:py-20 lg:py-24">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(16,185,129,0.14),_transparent_48%)]" />
         <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <BorderGlow
@@ -799,24 +799,24 @@ export default function HomePage() {
             fillOpacity={0.2}
             colors={['#10b981', '#22d3ee', '#34d399']}
           >
-            <div className="rounded-[2.25rem] p-8 text-center md:p-14">
-              <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-3xl bg-slate-card text-accent-emerald">
+            <div className="rounded-[2.25rem] p-6 text-center sm:p-8 md:p-14">
+              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-3xl bg-slate-card text-accent-emerald sm:h-16 sm:w-16">
                 <FiPhone size={26} />
               </div>
-              <h2 className={`${displayFontClass} text-3xl font-bold text-ink-primary md:text-5xl`}>{copy.ctaTitle}</h2>
-              <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ink-muted">{copy.ctaDescription}</p>
+              <h2 className={`${displayFontClass} text-2xl font-bold text-ink-primary sm:text-3xl md:text-5xl`}>{copy.ctaTitle}</h2>
+              <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-ink-muted sm:mt-6 sm:text-lg">{copy.ctaDescription}</p>
 
-              <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
+              <div className="mt-8 flex flex-col justify-center gap-3 sm:mt-10 sm:flex-row sm:gap-4">
                 <a
                   href={`https://wa.me/91${phoneNumber}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-primary h-14 px-10 text-base"
+                  className="btn-primary h-13 w-full px-6 text-sm sm:h-14 sm:w-auto sm:px-10 sm:text-base"
                 >
                   <FiMessageCircle className="mr-2" />
                   {copy.ctaPrimary}
                 </a>
-                <a href={`tel:${phoneNumber}`} className="btn-secondary h-14 px-10 text-base">
+                <a href={`tel:${phoneNumber}`} className="btn-secondary h-13 w-full px-6 text-sm sm:h-14 sm:w-auto sm:px-10 sm:text-base">
                   <FiPhone className="mr-2" />
                   {copy.ctaSecondary}
                 </a>
