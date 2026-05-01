@@ -79,7 +79,7 @@ export const HOME_COPY_CLEAN = {
     lanyardEyebrow: '\u092b\u093e\u0930\u094d\u092e \u0938\u092a\u094b\u0930\u094d\u091f \u0921\u0947\u0938\u094d\u0915',
     lanyardTitle: '\u0932\u0915\u094d\u0937\u094d\u092e\u0940 \u0915\u0943\u0937\u093f \u0915\u0947\u0902\u0926\u094d\u0930',
     lanyardRole: 'AI \u092b\u0938\u0932 \u0938\u0939\u093e\u092f\u0924\u093e \u0914\u0930 \u092d\u0930\u094b\u0938\u0947\u092e\u0902\u0926 \u0909\u0924\u094d\u092a\u093e\u0926 \u092e\u093e\u0930\u094d\u0917\u0926\u0930\u094d\u0936\u0928',
-    lanyardNote: '\u0905\u0902\u0924\u093f\u092e 3D \u090f\u0938\u0947\u091f \u0906\u0928\u0947 \u0924\u0915 \u092f\u0939 \u0938\u094d\u0925\u093f\u0930 \u092a\u094d\u0932\u0947\u0938\u0939\u094b\u0932\u094d\u0921\u0930 \u0932\u0948\u0928\u092f\u093e\u0930\u094d\u0921 \u0926\u093f\u0916\u093e\u092f\u093e \u091c\u093e \u0930\u0939\u093e \u0939\u0948\u0964',
+    lanyardNote: '\u091c\u093e\u0902\u091a, \u0938\u0932\u093e\u0939 \u0914\u0930 \u0909\u0924\u094d\u092a\u093e\u0926 \u2014 \u0938\u092c \u090f\u0915 \u091c\u0917\u0939',
     quickHighlights: [
       { title: '\u0924\u0947\u091c \u0928\u093f\u0926\u093e\u0928', description: '\u092b\u0938\u0932 \u0915\u0940 \u092b\u094b\u091f\u094b \u0938\u0947 \u0936\u0941\u0930\u0941\u0906\u0924\u0940 \u0938\u0902\u0915\u0947\u0924 \u091c\u0932\u094d\u0926\u0940 \u0938\u092e\u091d\u0947\u0902\u0964', icon: <FiCpu /> },
       { title: '\u0938\u094d\u0925\u093e\u0928\u0940\u092f \u092e\u093e\u0930\u094d\u0917\u0926\u0930\u094d\u0936\u0928', description: '\u091c\u092e\u0940\u0928 \u0914\u0930 \u092e\u094c\u0938\u092e \u0915\u0947 \u0939\u093f\u0938\u093e\u092c \u0938\u0947 \u0915\u093e\u092e \u0915\u0940 \u0938\u0932\u093e\u0939\u0964', icon: <FiUsers /> },
@@ -212,7 +212,7 @@ export const HOME_COPY_CLEAN = {
     lanyardEyebrow: 'Farm support desk',
     lanyardTitle: 'Laxmi Krashi Kendra',
     lanyardRole: 'AI crop care and dependable product guidance',
-    lanyardNote: 'Stable placeholder lanyard until the final 3D assets are available.',
+    lanyardNote: 'Diagnosis, inputs, and follow-up in one place',
     quickHighlights: [
       { title: 'Fast diagnosis', description: 'Spot likely crop issues from a simple field photo.', icon: <FiCpu /> },
       { title: 'Grounded guidance', description: 'Advice tuned to local growing conditions and timing.', icon: <FiUsers /> },

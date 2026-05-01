@@ -47,7 +47,7 @@ export default function TrustStatsBar({ items = [] }) {
             : 'border-line-soft/10 bg-slate-card/76 shadow-black/18'
         }`}
       >
-        <div className="grid gap-4 md:grid-cols-3 md:gap-0">
+        <div className="grid grid-cols-3 gap-2 md:gap-0">
           {items.map((item, index) => (
             <motion.div
               key={item.label}

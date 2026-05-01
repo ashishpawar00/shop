@@ -11,6 +11,7 @@ import { TbSeeding, TbTractor } from 'react-icons/tb';
 import { useCart } from '@/contexts/CartContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { API_URL } from '@/lib/api';
+import { useToast } from '@/components/Common/ToastProvider';
 
 const COPY = {
   en: {
@@ -35,7 +36,10 @@ const COPY = {
     reset: 'Clear filters',
     off: 'OFF',
     freeDelivery: 'Free Delivery',
-    assured: 'Assured Quality'
+    assured: 'Assured Quality',
+    outOfStock: 'Out of Stock',
+    lowStock: 'Only {n} left',
+    addedToast: 'Added to cart'
   },
   hi: {
     title: 'उत्पाद | लक्ष्मी कृषि केंद्र',
@@ -59,7 +63,10 @@ const COPY = {
     reset: 'फ़िल्टर हटाएं',
     off: 'छूट',
     freeDelivery: 'मुफ़्त डिलीवरी',
-    assured: 'गुणवत्ता आश्वासन'
+    assured: 'गुणवत्ता आश्वासन',
+    outOfStock: 'स्टॉक में नहीं',
+    lowStock: 'सिर्फ {n} बचे',
+    addedToast: 'कार्ट में जोड़ा गया'
   }
 };
 
@@ -228,7 +235,10 @@ export default function ProductsCatalogPage() {
     }
   }, [router.query.category, router.query.search]);
 
+  const { success: toastSuccess } = useToast();
+
   const handleAddToCart = product => {
+    if (product.inStock === false) return;
     addToCart({
       id: product._id,
       _id: product._id,
@@ -240,6 +250,8 @@ export default function ProductsCatalogPage() {
     });
 
     setAddedId(product._id);
+    const displayName = language === 'hi' ? (product.nameHindi || product.name) : (product.name || product.nameHindi);
+    toastSuccess(`${displayName} — ${copy.addedToast}`);
     setTimeout(() => setAddedId(null), 1200);
   };
 
@@ -405,6 +417,8 @@ export default function ProductsCatalogPage() {
                 const mrp = productMrps[product._id] || getMrp(product.price);
                 const discount = getDiscount(product.price, mrp);
                 const detailsHref = `/products/${product._id}`;
+                const isOutOfStock = product.inStock === false;
+                const isLowStock = !isOutOfStock && product.stockQuantity > 0 && product.stockQuantity < 5;
 
                 return (
                   <motion.div
@@ -424,8 +438,11 @@ export default function ProductsCatalogPage() {
                             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                           />
                         ) : (
-                          <div className="flex flex-col items-center gap-2 text-ink-muted/50">
-                            <CategoryIcon size={36} className="text-accent-emerald/60" />
+                          <div className="flex flex-col items-center justify-center gap-3 p-4 text-center">
+                            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-accent-emerald/15">
+                              <CategoryIcon size={32} className="text-accent-emerald" />
+                            </div>
+                            <p className="line-clamp-2 text-xs font-semibold text-ink-muted">{localizedName}</p>
                           </div>
                         )}
                       </div>
@@ -441,6 +458,13 @@ export default function ProductsCatalogPage() {
                       <span className="absolute bottom-2 right-2 rounded-md bg-accent-emerald/90 px-1.5 py-0.5 text-[9px] font-bold text-white shadow-sm">
                         ✓ {copy.assured}
                       </span>
+
+                      {/* Out of stock overlay */}
+                      {isOutOfStock && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                          <span className="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-bold text-white">{copy.outOfStock}</span>
+                        </div>
+                      )}
                     </Link>
 
                     {/* Product Info */}
@@ -476,14 +500,24 @@ export default function ProductsCatalogPage() {
                       {/* Free delivery */}
                       <p className="mt-1 text-[10px] text-ink-muted">{copy.freeDelivery}</p>
 
+                      {/* Low stock warning */}
+                      {isLowStock && (
+                        <p className="mt-1 text-[10px] font-bold text-orange-500">
+                          {copy.lowStock.replace('{n}', product.stockQuantity)}
+                        </p>
+                      )}
+
                       {/* Add to Cart */}
                       <button
                         type="button"
                         onClick={() => handleAddToCart(product)}
+                        disabled={isOutOfStock}
                         className={`mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-bold transition-all sm:text-sm ${
-                          justAdded
-                            ? 'bg-green-500/15 text-green-600'
-                            : 'bg-accent-emerald text-white hover:bg-emerald-600 active:scale-[0.97]'
+                          isOutOfStock
+                            ? 'cursor-not-allowed bg-slate-base/60 text-ink-muted'
+                            : justAdded
+                              ? 'bg-green-500/15 text-green-600'
+                              : 'bg-accent-emerald text-white hover:bg-emerald-600 active:scale-[0.97]'
                         }`}
                       >
                         {justAdded ? <FiCheck size={14} /> : <FiShoppingCart size={14} />}

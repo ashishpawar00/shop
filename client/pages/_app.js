@@ -7,6 +7,7 @@ import { LanguageProvider } from "../contexts/LanguageContext";
 import { AuthProvider } from "../contexts/AuthContext";
 import { CartProvider } from "../contexts/CartContext";
 import { ThemeProvider } from "../contexts/ThemeContext";
+import { ToastProvider } from "../components/Common/ToastProvider";
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -44,8 +45,10 @@ function MyApp({ Component, pageProps }) {
       <LanguageProvider>
         <AuthProvider>
           <CartProvider>
-            <AppLoader visible={routeLoading} />
-            {isAdminRoute ? <Component {...pageProps} /> : <Layout><Component {...pageProps} /></Layout>}
+            <ToastProvider>
+              <AppLoader visible={routeLoading} />
+              {isAdminRoute ? <Component {...pageProps} /> : <Layout><Component {...pageProps} /></Layout>}
+            </ToastProvider>
           </CartProvider>
         </AuthProvider>
       </LanguageProvider>

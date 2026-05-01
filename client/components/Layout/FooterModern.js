@@ -1,15 +1,11 @@
-﻿import React from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { FiArrowUp, FiClock, FiMapPin, FiPhone } from 'react-icons/fi';
 import { FaFacebook, FaInstagram, FaWhatsapp, FaYoutube } from 'react-icons/fa';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
 
-const SOCIAL_LINKS = [
-  { icon: FaFacebook, href: '#' },
-  { icon: FaInstagram, href: '#' },
-  { icon: FaYoutube, href: '#' }
-];
+const SOCIAL_LINKS = [];
 
 export default function FooterModern() {
   const { language } = useLanguage();
@@ -69,7 +65,7 @@ export default function FooterModern() {
   };
 
   return (
-    <footer className="relative overflow-hidden bg-slate-base pb-12 pt-24">
+    <footer className="relative overflow-hidden bg-slate-base pb-12 pt-14 md:pt-24">
       <button
         type="button"
         onClick={scrollToTop}
@@ -176,7 +172,7 @@ export default function FooterModern() {
           </div>
         </div>
 
-        <div className="mt-24 flex flex-col items-center justify-between gap-8 border-t border-line-soft/10 pt-12 md:flex-row">
+        <div className="mt-12 flex flex-col items-center justify-between gap-6 border-t border-line-soft/10 pt-8 md:mt-24 md:flex-row md:gap-8 md:pt-12">
           <p className="text-sm text-ink-muted">
             © {currentYear} Laxmi Krashi Kendra. {labels.rights}
           </p>

@@ -24,6 +24,7 @@ const enquiryRoutes = require('./routes/enquiries');
 const productRoutes = require('./routes/products');
 const orderRoutes = require('./routes/orders');
 const postRoutes = require('./routes/posts');
+const couponRoutes = require('./routes/coupons');
 const { ensureLocalAdminUser } = require('./utils/ensureLocalAdmin');
 
 const app = express();
@@ -82,6 +83,7 @@ app.use('/api/enquiries', enquiryRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/posts', postRoutes);
+app.use('/api/coupons', couponRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

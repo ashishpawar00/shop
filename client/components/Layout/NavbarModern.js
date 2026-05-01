@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FiChevronRight, FiGlobe, FiLogOut, FiMenu, FiMoon, FiShield, FiShoppingCart, FiSun, FiX } from 'react-icons/fi';
+import { FiChevronRight, FiGlobe, FiLogOut, FiMenu, FiMoon, FiSearch, FiShield, FiShoppingCart, FiSun, FiX } from 'react-icons/fi';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/contexts/CartContext';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -58,6 +58,8 @@ export default function NavbarModern() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const labels = useMemo(
     () =>
@@ -194,6 +196,36 @@ export default function NavbarModern() {
         </div>
 
         <div className="hidden items-center gap-3 md:flex">
+          {/* Search toggle */}
+          {showSearch ? (
+            <form
+              onSubmit={e => { e.preventDefault(); if (searchQuery.trim()) { router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`); setShowSearch(false); setSearchQuery(''); } }}
+              className="flex items-center gap-1 rounded-full border border-accent-emerald/30 bg-slate-card/88 px-3 py-1.5"
+            >
+              <FiSearch size={14} className="text-ink-muted" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder={language === 'hi' ? '\u0916\u094b\u091c\u0947\u0902...' : 'Search...'}
+                className="w-32 bg-transparent text-sm font-semibold text-ink-primary outline-none placeholder:text-ink-muted"
+                autoFocus
+              />
+              <button type="button" onClick={() => { setShowSearch(false); setSearchQuery(''); }} className="text-ink-muted hover:text-ink-primary">
+                <FiX size={14} />
+              </button>
+            </form>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setShowSearch(true)}
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-line-soft/10 bg-slate-card/88 text-ink-muted transition-all hover:border-accent-emerald/40 hover:text-accent-emerald"
+              title="Search products"
+            >
+              <FiSearch size={18} />
+            </button>
+          )}
+
           <LanguageToggle language={language} changeLanguage={changeLanguage} />
           <ThemeToggle isLight={isLight} toggleTheme={toggleTheme} />
 
@@ -239,14 +271,25 @@ export default function NavbarModern() {
           )}
         </div>
 
-        <button
-          type="button"
-          onClick={() => setIsOpen(open => !open)}
-          className="rounded-full border border-line-soft/10 bg-slate-card/88 p-2.5 text-ink-muted transition-colors hover:text-accent-emerald md:hidden"
-          aria-label="Toggle navigation"
-        >
-          {isOpen ? <FiX size={22} /> : <FiMenu size={22} />}
-        </button>
+        {/* Mobile search + hamburger */}
+        <div className="flex items-center gap-2 md:hidden">
+          <button
+            type="button"
+            onClick={() => router.push('/products')}
+            className="rounded-full border border-line-soft/10 bg-slate-card/88 p-2.5 text-ink-muted transition-colors hover:text-accent-emerald"
+            aria-label="Search products"
+          >
+            <FiSearch size={20} />
+          </button>
+          <button
+            type="button"
+            onClick={() => setIsOpen(open => !open)}
+            className="rounded-full border border-line-soft/10 bg-slate-card/88 p-2.5 text-ink-muted transition-colors hover:text-accent-emerald"
+            aria-label="Toggle navigation"
+          >
+            {isOpen ? <FiX size={22} /> : <FiMenu size={22} />}
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>
