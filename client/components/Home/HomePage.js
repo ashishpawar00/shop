@@ -10,6 +10,7 @@ import {
   FiCheck,
   FiCpu,
   FiMessageCircle,
+  FiPackage,
   FiPhone,
   FiPlus,
   FiSearch,
@@ -241,7 +242,7 @@ export default function HomePage() {
               {heroCopy.heroDescription}
             </p>
 
-            <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:flex sm:justify-center sm:gap-4">
+            <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:grid-cols-3 sm:justify-center sm:gap-4">
               <Link
                 href="/crop-doctor"
                 className="group flex flex-col items-center gap-2.5 rounded-2xl border border-accent-emerald/30 bg-accent-emerald/10 px-4 py-5 text-center shadow-lg shadow-emerald-500/10 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-accent-emerald/50 hover:bg-accent-emerald/15 hover:shadow-xl sm:rounded-3xl sm:px-8 sm:py-6"
@@ -260,6 +261,19 @@ export default function HomePage() {
                   <FiShoppingBag size={20} />
                 </div>
                 <span className="text-sm font-black text-ink-primary sm:text-base">{heroCopy.secondaryCta}</span>
+                <FiArrowRight className="text-ink-muted opacity-60 transition-transform group-hover:translate-x-1" size={16} />
+              </Link>
+              <Link
+                href="/my-orders"
+                className="group col-span-2 flex flex-row items-center justify-between gap-4 rounded-2xl border border-line-soft/15 bg-slate-card/60 px-6 py-5 shadow-lg shadow-black/5 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-accent-emerald/30 hover:bg-slate-card/80 hover:shadow-xl sm:col-span-1 sm:flex-col sm:items-center sm:justify-center sm:gap-2.5 sm:rounded-3xl sm:px-8 sm:py-6"
+              >
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-accent-emerald/30 bg-accent-emerald/10 text-accent-emerald sm:h-12 sm:w-12">
+                  <FiPackage size={20} />
+                </div>
+                <div className="flex flex-col items-start sm:items-center">
+                  <span className="text-sm font-black text-ink-primary sm:text-base">{heroCopy.trackOrders}</span>
+                  <span className="text-[10px] font-medium text-ink-muted sm:hidden">Process & Status</span>
+                </div>
                 <FiArrowRight className="text-ink-muted opacity-60 transition-transform group-hover:translate-x-1" size={16} />
               </Link>
             </div>

@@ -74,6 +74,7 @@ export default function NavbarModern() {
             gallery: 'गैलरी',
             contact: 'संपर्क',
             login: 'लॉगिन',
+            myOrders: 'मेरे ऑर्डर',
             cart: 'कार्ट',
             logout: 'लॉगआउट',
             adminPanel: 'एडमिन पैनल',
@@ -92,6 +93,7 @@ export default function NavbarModern() {
             gallery: 'Gallery',
             contact: 'Contact',
             login: 'Login',
+            myOrders: 'My Orders',
             cart: 'Cart',
             logout: 'Logout',
             adminPanel: 'Admin Panel',
@@ -150,10 +152,11 @@ export default function NavbarModern() {
 
   const mobileOnlyItems = useMemo(
     () => [
+      { label: labels.myOrders, href: user ? '/my-orders' : '/login?redirect=/my-orders' },
       { label: labels.gallery, href: '/gallery' },
       { label: labels.contact, href: '/contact' }
     ],
-    [labels]
+    [labels, user]
   );
 
   const isActive = href => router.pathname === href;
@@ -239,6 +242,13 @@ export default function NavbarModern() {
                 {cartCount}
               </span>
             ) : null}
+          </Link>
+
+          <Link
+            href={user ? '/my-orders' : '/login?redirect=/my-orders'}
+            className="inline-flex items-center gap-2 rounded-full border border-line-soft/10 bg-slate-card/88 px-4 py-2 text-sm font-bold text-ink-secondary transition-all hover:border-accent-emerald/40 hover:text-accent-emerald"
+          >
+            {labels.myOrders}
           </Link>
 
           {user ? (
