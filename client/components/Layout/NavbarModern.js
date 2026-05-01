@@ -271,8 +271,8 @@ export default function NavbarModern() {
           )}
         </div>
 
-        {/* Mobile search + hamburger */}
-        <div className="flex items-center gap-2 md:hidden">
+        {/* Mobile search + theme + hamburger */}
+        <div className="flex items-center gap-1.5 md:hidden">
           <button
             type="button"
             onClick={() => router.push('/products')}
@@ -280,6 +280,14 @@ export default function NavbarModern() {
             aria-label="Search products"
           >
             <FiSearch size={20} />
+          </button>
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="rounded-full border border-line-soft/10 bg-slate-card/88 p-2.5 text-ink-muted transition-colors hover:text-accent-emerald"
+            aria-label={isLight ? 'Switch to dark mode' : 'Switch to light mode'}
+          >
+            {isLight ? <FiMoon size={20} /> : <FiSun size={20} />}
           </button>
           <button
             type="button"
