@@ -220,7 +220,7 @@ export default function HomePage() {
           />
         </div>
 
-        <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-10 px-4 sm:gap-12 sm:px-6 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16 lg:px-8">
+        <div className="relative z-10 mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <div>
             <div className="mb-6 inline-flex items-center rounded-full border border-line-soft/10 bg-slate-card/80 px-4 py-2 text-[11px] font-black uppercase tracking-[0.18em] text-accent-emerald shadow-xl backdrop-blur sm:mb-8 sm:px-5 sm:text-xs sm:tracking-[0.22em]">
               <BlurText text={copy.badge} animateBy="words" className="leading-none" />
@@ -235,11 +235,11 @@ export default function HomePage() {
               <span className="block text-accent-emerald">{heroCopy.heroTitleAccent}</span>
             </h1>
 
-            <p className="max-w-2xl text-base leading-relaxed text-ink-secondary sm:text-lg md:text-xl">
+            <p className="mx-auto max-w-2xl text-base leading-relaxed text-ink-secondary sm:text-lg md:text-xl">
               {heroCopy.heroDescription}
             </p>
 
-            <div className="mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:gap-4">
+            <div className="mt-8 flex flex-col items-center gap-3 sm:mt-10 sm:flex-row sm:justify-center sm:gap-4">
               <Link
                 href="/crop-doctor"
                 className="inline-flex h-13 w-full items-center justify-center rounded-full bg-accent-emerald px-6 text-sm font-black text-white shadow-[0_24px_60px_rgba(16,185,129,0.28)] transition-all duration-300 hover:scale-[1.02] hover:bg-emerald-600 active:scale-95 sm:h-14 sm:w-auto sm:px-10 sm:text-base"
@@ -255,131 +255,21 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
-
-          <div className="relative">
-            <BorderGlow
-              className="rounded-[2rem]"
-              borderRadius={32}
-              glowColor="145 75 55"
-              backgroundColor={supportCardBackground}
-              fillOpacity={supportFillOpacity}
-              colors={['#10b981', '#22d3ee', '#86efac']}
-            >
-              <div className="p-5 sm:p-6 md:p-8">
-                <div className="mb-5 flex items-start justify-between gap-4 sm:mb-6">
-                  <div>
-                    <p className="text-xs font-black uppercase tracking-[0.24em] text-accent-emerald">
-                      {copy.lanyardEyebrow}
-                    </p>
-                    <p className="mt-2 max-w-sm text-sm leading-relaxed text-ink-muted">
-                      {heroCopy.supportDesk}
-                    </p>
-                  </div>
-                  <div className="rounded-2xl bg-slate-base p-2.5 text-accent-emerald shadow-lg sm:p-3">
-                    <FiShield size={20} />
-                  </div>
-                </div>
-
-                <Lanyard
-                  badgeName={copy.lanyardTitle}
-                  role={copy.lanyardRole}
-                  phone={phoneNumber}
-                  note={copy.lanyardNote}
-                />
-              </div>
-            </BorderGlow>
-          </div>
         </div>
       </header>
 
       <TrustStatsBar items={trustStats} />
 
-      <section className="bg-slate-card py-10 sm:py-12">
-        <div className="mx-auto grid max-w-7xl gap-5 px-4 sm:px-6 lg:grid-cols-3 lg:px-8">
-          {copy.quickHighlights.map(item => (
-            <div
-              key={item.title}
-              className="rounded-[1.75rem] border border-line-soft/10 bg-slate-base/80 p-5 shadow-xl shadow-black/10 sm:p-6"
-            >
-              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-card text-xl text-accent-emerald">
-                {item.icon}
-              </div>
-              <h2 className="text-xl font-bold text-ink-primary">{item.title}</h2>
-              <p className="mt-3 leading-relaxed text-ink-muted">{item.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="bg-slate-base py-16 sm:py-20 lg:py-24">
+      <section className="bg-slate-base py-10 sm:py-14 lg:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-10 text-center sm:mb-14">
-            <ScrollFloat
-              containerClassName="mx-auto mb-6"
-              textClassName={`${displayFontClass} text-2xl font-bold text-ink-primary sm:text-3xl md:text-5xl`}
-            >
-              {copy.servicesHeading}
-            </ScrollFloat>
-            <p className="mx-auto max-w-3xl text-base leading-relaxed text-ink-muted sm:text-lg">
-              {copy.servicesDescription}
-            </p>
-          </div>
-
-          <MagicBento items={servicesWithOutcomes} />
-        </div>
-      </section>
-
-      <section className="bg-slate-card py-16 sm:py-20 lg:py-24">
-        <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[0.84fr_1.16fr] lg:px-8">
-          <div className="lg:sticky lg:top-28">
-            <div className="mb-4 inline-flex rounded-full bg-slate-base px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-accent-cyan">
-              {copy.processEyebrow}
-            </div>
-            <h2 className={`${displayFontClass} text-2xl font-bold leading-tight text-ink-primary sm:text-3xl md:text-5xl`}>
-              {copy.processTitle}
-            </h2>
-            <p className="mt-4 text-base leading-relaxed text-ink-muted sm:mt-6 sm:text-lg">{copy.processDescription}</p>
-          </div>
-
-          <div className="space-y-6">
-            {copy.processSteps.map(step => (
-              <BorderGlow
-                key={step.step}
-                borderRadius={30}
-                glowColor="160 70 58"
-                backgroundColor={isLight ? 'rgba(255, 255, 255, 0.92)' : 'rgba(2, 6, 23, 0.98)'}
-                fillOpacity={0.18}
-                colors={['#10b981', '#34d399', '#22d3ee']}
-              >
-                <div className="grid items-start gap-4 p-5 sm:gap-5 sm:p-6 md:grid-cols-[auto_1fr_auto] md:p-8">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-card text-lg font-black text-accent-emerald">
-                    {step.step}
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-ink-primary">{step.title}</h3>
-                    <p className="mt-3 leading-relaxed text-ink-muted">{step.description}</p>
-                  </div>
-                  <div className="hidden rounded-2xl bg-slate-card p-3 text-accent-cyan md:block">
-                    <FiArrowRight size={20} />
-                  </div>
-                </div>
-              </BorderGlow>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-slate-base py-16 sm:py-20 lg:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-10 flex flex-col gap-5 md:mb-14 md:flex-row md:items-end md:justify-between">
+          <div className="mb-8 flex flex-col gap-4 md:mb-10 md:flex-row md:items-end md:justify-between">
             <div className="max-w-2xl">
-              <p className="mb-4 text-xs font-black uppercase tracking-[0.22em] text-accent-emerald">
+              <p className="mb-3 text-xs font-black uppercase tracking-[0.22em] text-accent-emerald">
                 Featured Inputs
               </p>
-              <h2 className={`${displayFontClass} text-2xl font-bold leading-tight text-ink-primary sm:text-3xl md:text-5xl`}>
+              <h2 className={`${displayFontClass} text-2xl font-bold leading-tight text-ink-primary sm:text-3xl md:text-4xl`}>
                 {copy.featuredTitle}
               </h2>
-              <p className="mt-4 text-base leading-relaxed text-ink-muted sm:mt-5 sm:text-lg">{copy.featuredDescription}</p>
             </div>
 
             <Link href="/products" className="btn-secondary h-12 w-full px-8 text-sm sm:w-auto">
@@ -469,6 +359,81 @@ export default function HomePage() {
                     </div>
                   );
                 })}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-slate-card py-10 sm:py-12">
+        <div className="mx-auto grid max-w-7xl gap-5 px-4 sm:px-6 lg:grid-cols-3 lg:px-8">
+          {copy.quickHighlights.map(item => (
+            <div
+              key={item.title}
+              className="rounded-[1.75rem] border border-line-soft/10 bg-slate-base/80 p-5 shadow-xl shadow-black/10 sm:p-6"
+            >
+              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-card text-xl text-accent-emerald">
+                {item.icon}
+              </div>
+              <h2 className="text-xl font-bold text-ink-primary">{item.title}</h2>
+              <p className="mt-3 leading-relaxed text-ink-muted">{item.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="bg-slate-base py-16 sm:py-20 lg:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-10 text-center sm:mb-14">
+            <ScrollFloat
+              containerClassName="mx-auto mb-6"
+              textClassName={`${displayFontClass} text-2xl font-bold text-ink-primary sm:text-3xl md:text-5xl`}
+            >
+              {copy.servicesHeading}
+            </ScrollFloat>
+            <p className="mx-auto max-w-3xl text-base leading-relaxed text-ink-muted sm:text-lg">
+              {copy.servicesDescription}
+            </p>
+          </div>
+
+          <MagicBento items={servicesWithOutcomes} />
+        </div>
+      </section>
+
+      <section className="bg-slate-card py-16 sm:py-20 lg:py-24">
+        <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[0.84fr_1.16fr] lg:px-8">
+          <div className="lg:sticky lg:top-28">
+            <div className="mb-4 inline-flex rounded-full bg-slate-base px-4 py-2 text-xs font-black uppercase tracking-[0.2em] text-accent-cyan">
+              {copy.processEyebrow}
+            </div>
+            <h2 className={`${displayFontClass} text-2xl font-bold leading-tight text-ink-primary sm:text-3xl md:text-5xl`}>
+              {copy.processTitle}
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-ink-muted sm:mt-6 sm:text-lg">{copy.processDescription}</p>
+          </div>
+
+          <div className="space-y-6">
+            {copy.processSteps.map(step => (
+              <BorderGlow
+                key={step.step}
+                borderRadius={30}
+                glowColor="160 70 58"
+                backgroundColor={isLight ? 'rgba(255, 255, 255, 0.92)' : 'rgba(2, 6, 23, 0.98)'}
+                fillOpacity={0.18}
+                colors={['#10b981', '#34d399', '#22d3ee']}
+              >
+                <div className="grid items-start gap-4 p-5 sm:gap-5 sm:p-6 md:grid-cols-[auto_1fr_auto] md:p-8">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-card text-lg font-black text-accent-emerald">
+                    {step.step}
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-ink-primary">{step.title}</h3>
+                    <p className="mt-3 leading-relaxed text-ink-muted">{step.description}</p>
+                  </div>
+                  <div className="hidden rounded-2xl bg-slate-card p-3 text-accent-cyan md:block">
+                    <FiArrowRight size={20} />
+                  </div>
+                </div>
+              </BorderGlow>
+            ))}
           </div>
         </div>
       </section>
