@@ -12,7 +12,9 @@ import {
   FiMessageCircle,
   FiPhone,
   FiPlus,
+  FiSearch,
   FiShield,
+  FiShoppingBag,
   FiShoppingCart,
   FiTruck,
   FiUsers,
@@ -239,19 +241,26 @@ export default function HomePage() {
               {heroCopy.heroDescription}
             </p>
 
-            <div className="mt-8 flex flex-col items-center gap-3 sm:mt-10 sm:flex-row sm:justify-center sm:gap-4">
+            <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:flex sm:justify-center sm:gap-4">
               <Link
                 href="/crop-doctor"
-                className="inline-flex h-13 w-full items-center justify-center rounded-full bg-accent-emerald px-6 text-sm font-black text-white shadow-[0_24px_60px_rgba(16,185,129,0.28)] transition-all duration-300 hover:scale-[1.02] hover:bg-emerald-600 active:scale-95 sm:h-14 sm:w-auto sm:px-10 sm:text-base"
+                className="group flex flex-col items-center gap-2.5 rounded-2xl border border-accent-emerald/30 bg-accent-emerald/10 px-4 py-5 text-center shadow-lg shadow-emerald-500/10 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-accent-emerald/50 hover:bg-accent-emerald/15 hover:shadow-xl sm:rounded-3xl sm:px-8 sm:py-6"
               >
-                {heroCopy.primaryCta}
-                <FiArrowRight className="ml-2" />
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-accent-emerald text-white shadow-md sm:h-12 sm:w-12">
+                  <FiSearch size={20} />
+                </div>
+                <span className="text-sm font-black text-accent-emerald sm:text-base">{heroCopy.primaryCta}</span>
+                <FiArrowRight className="text-accent-emerald opacity-60 transition-transform group-hover:translate-x-1" size={16} />
               </Link>
               <Link
                 href="/products"
-                className="inline-flex h-13 w-full items-center justify-center rounded-full border border-accent-emerald/65 bg-transparent px-6 text-sm font-bold text-accent-emerald transition-all duration-300 hover:bg-accent-emerald/10 hover:text-accent-emerald sm:h-14 sm:w-auto sm:px-10 sm:text-base"
+                className="group flex flex-col items-center gap-2.5 rounded-2xl border border-line-soft/15 bg-slate-card/60 px-4 py-5 text-center shadow-lg shadow-black/5 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-accent-emerald/30 hover:bg-slate-card/80 hover:shadow-xl sm:rounded-3xl sm:px-8 sm:py-6"
               >
-                {heroCopy.secondaryCta}
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-accent-emerald/30 bg-accent-emerald/10 text-accent-emerald sm:h-12 sm:w-12">
+                  <FiShoppingBag size={20} />
+                </div>
+                <span className="text-sm font-black text-ink-primary sm:text-base">{heroCopy.secondaryCta}</span>
+                <FiArrowRight className="text-ink-muted opacity-60 transition-transform group-hover:translate-x-1" size={16} />
               </Link>
             </div>
           </div>

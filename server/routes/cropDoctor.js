@@ -1,5 +1,6 @@
 const express = require('express');
 const Product = require('../models/Product');
+const { HINDI, CROP_LABELS_HI, SYMPTOM_LABELS_HI, ISSUE_AREA_LABELS_HI } = require('./cropDoctorHindi');
 
 const router = express.Router();
 
@@ -210,6 +211,7 @@ function normalizeInput(body) {
       : [],
     notes: String(body.notes || '').trim().toLowerCase(),
     hasImage: Boolean(body.imageData),
+    language: String(body.language || 'en').trim().toLowerCase(),
   };
 }
 
@@ -296,56 +298,60 @@ router.post('/analyze', async (req, res) => {
 
     const bestMatch = ranked[0];
 
+    const isHindi = input.language === 'hi';
+    const fb = HINDI.fallback;
+
     if (!bestMatch || bestMatch.score <= 0) {
       return res.status(200).json({
         diagnosis: {
-          title: 'Field inspection recommended',
-          crop: CROP_LABELS[input.cropType] || input.cropType,
+          title: isHindi ? fb.title : 'Field inspection recommended',
+          crop: isHindi ? (CROP_LABELS_HI[input.cropType] || input.cropType) : (CROP_LABELS[input.cropType] || input.cropType),
           severity: 'medium',
           confidence: 0.38,
-          summary: 'The current signals are too limited for a confident match.',
-          cause: 'Please add a clearer symptom description or contact the store for manual review.',
-          immediateActions: [
+          summary: isHindi ? fb.summary : 'The current signals are too limited for a confident match.',
+          cause: isHindi ? fb.cause : 'Please add a clearer symptom description or contact the store for manual review.',
+          immediateActions: isHindi ? fb.immediateActions : [
             'Take close photos of the affected leaf, stem, and full plant.',
             'Add notes about irrigation, insects, and how quickly the issue spread.',
             'Reach out for a manual field recommendation before spraying.',
           ],
-          treatment: [
+          treatment: isHindi ? fb.treatment : [
             'Do not over-apply pesticides until the issue is confirmed.',
             'Keep the crop under observation for the next 24 hours.',
           ],
-          prevention: [
+          prevention: isHindi ? fb.prevention : [
             'Capture symptoms early and keep field records.',
           ],
         },
-        matchedSymptoms: input.symptoms.map((symptom) => SYMPTOM_LABELS[symptom] || symptom),
-        issueArea: ISSUE_AREA_LABELS[input.issueArea] || '',
+        matchedSymptoms: input.symptoms.map((symptom) => (isHindi ? SYMPTOM_LABELS_HI[symptom] : SYMPTOM_LABELS[symptom]) || symptom),
+        issueArea: isHindi ? (ISSUE_AREA_LABELS_HI[input.issueArea] || '') : (ISSUE_AREA_LABELS[input.issueArea] || ''),
         recommendedProducts: [],
-        disclaimer: 'This is a decision-support recommendation and should be confirmed on-field before major spray decisions.',
+        disclaimer: isHindi ? HINDI.disclaimer : 'This is a decision-support recommendation and should be confirmed on-field before major spray decisions.',
       });
     }
 
     const diagnosis = bestMatch.diagnosis;
+    const hi = HINDI[diagnosis.id];
     const recommendedProducts = await loadRecommendedProducts(diagnosis.category, input.cropType);
 
     res.json({
       diagnosis: {
         id: diagnosis.id,
-        title: diagnosis.title,
-        crop: CROP_LABELS[input.cropType] || input.cropType,
+        title: isHindi && hi ? hi.title : diagnosis.title,
+        crop: isHindi ? (CROP_LABELS_HI[input.cropType] || input.cropType) : (CROP_LABELS[input.cropType] || input.cropType),
         severity: diagnosis.severity,
         confidence: confidenceFromScore(bestMatch.score),
-        summary: diagnosis.summary,
-        cause: diagnosis.cause,
-        immediateActions: diagnosis.immediateActions,
-        treatment: diagnosis.treatment,
-        prevention: diagnosis.prevention,
+        summary: isHindi && hi ? hi.summary : diagnosis.summary,
+        cause: isHindi && hi ? hi.cause : diagnosis.cause,
+        immediateActions: isHindi && hi ? hi.immediateActions : diagnosis.immediateActions,
+        treatment: isHindi && hi ? hi.treatment : diagnosis.treatment,
+        prevention: isHindi && hi ? hi.prevention : diagnosis.prevention,
       },
-      matchedSymptoms: bestMatch.matchedSymptoms.map((symptom) => SYMPTOM_LABELS[symptom] || symptom),
+      matchedSymptoms: bestMatch.matchedSymptoms.map((symptom) => (isHindi ? SYMPTOM_LABELS_HI[symptom] : SYMPTOM_LABELS[symptom]) || symptom),
       noteSignals: bestMatch.keywordHits,
-      issueArea: ISSUE_AREA_LABELS[input.issueArea] || '',
+      issueArea: isHindi ? (ISSUE_AREA_LABELS_HI[input.issueArea] || '') : (ISSUE_AREA_LABELS[input.issueArea] || ''),
       recommendedProducts,
-      disclaimer: 'This is a decision-support recommendation and should be confirmed on-field before major spray decisions.',
+      disclaimer: isHindi ? HINDI.disclaimer : 'This is a decision-support recommendation and should be confirmed on-field before major spray decisions.',
     });
   } catch (error) {
     res.status(500).json({ message: error.message || 'Unable to analyze crop sample.' });

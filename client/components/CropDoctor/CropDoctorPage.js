@@ -20,6 +20,7 @@ import {
 } from 'react-icons/fi';
 import { API_URL } from '@/lib/api';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const CROP_OPTIONS = [
   { value: 'wheat', label: 'Wheat' },
@@ -69,6 +70,7 @@ function severityTone(severity) {
 
 export default function CropDoctorPage() {
   const { isLight } = useTheme();
+  const { language } = useLanguage();
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -163,6 +165,7 @@ export default function CropDoctorPage() {
           symptoms,
           notes,
           imageData,
+          language,
         }),
       });
 
