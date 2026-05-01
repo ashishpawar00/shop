@@ -6,6 +6,10 @@ import { API_URL } from '@/lib/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/contexts/CartContext';
 
+function isValidProductId(value) {
+  return typeof value === 'string' && /^[a-f\d]{24}$/i.test(value);
+}
+
 export default function CheckoutPage() {
   const router = useRouter();
   const { cart, cartTotal, clearCart } = useCart();
@@ -45,6 +49,11 @@ export default function CheckoutPage() {
     setError('');
 
     try {
+      const invalidItems = cart.filter((item) => !isValidProductId(String(item._id || item.id || '')));
+      if (invalidItems.length > 0) {
+        throw new Error('Some cart items are demo or unavailable products. Please remove them and add real store products before placing the order.');
+      }
+
       const response = await fetch(`${API_URL}/orders`, {
         method: 'POST',
         headers: {

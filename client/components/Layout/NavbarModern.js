@@ -142,6 +142,7 @@ export default function NavbarModern() {
     () => [
       { label: labels.home, href: '/' },
       { label: labels.products, href: '/products' },
+      { label: labels.myOrders, href: '/my-orders' },
       { label: labels.services, href: '/services' },
       { label: labels.cropDoctor, href: '/crop-doctor', highlight: true },
       { label: labels.advisory, href: '/advisory' },

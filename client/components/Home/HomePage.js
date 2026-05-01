@@ -55,6 +55,8 @@ const MagicBento = dynamic(() => import('@/components/Shared/MagicBento/MagicBen
   )
 });
 
+const PRODUCT_ID_RE = /^[a-f\d]{24}$/i;
+
 export default function HomePage() {
   const { language } = useLanguage();
   const { addToCart, cart } = useCart();
@@ -168,6 +170,9 @@ export default function HomePage() {
 
   const handleAddToCart = product => {
     const productId = product.id || product._id || product.name;
+    if (!PRODUCT_ID_RE.test(String(productId))) {
+      return;
+    }
 
     addToCart({
       id: productId,
@@ -308,6 +313,7 @@ export default function HomePage() {
                 ))
               : featuredProducts.map(product => {
                   const productId = product.id || product._id || product.name;
+                  const canOrder = PRODUCT_ID_RE.test(String(productId));
                   const productName = language === 'hi' ? product.nameHindi || product.name : product.name;
                   const productDescription =
                     language === 'hi'
@@ -353,17 +359,22 @@ export default function HomePage() {
                         <button
                           type="button"
                           onClick={() => handleAddToCart(product)}
-                          className="flex h-10 flex-1 items-center justify-center rounded-xl bg-accent-emerald px-2 text-xs font-bold text-white transition-colors hover:bg-emerald-600 sm:h-11 sm:rounded-2xl sm:text-sm"
+                          disabled={!canOrder}
+                          className={`flex h-10 flex-1 items-center justify-center rounded-xl px-2 text-xs font-bold transition-colors sm:h-11 sm:rounded-2xl sm:text-sm ${
+                            canOrder
+                              ? 'bg-accent-emerald text-white hover:bg-emerald-600'
+                              : 'cursor-not-allowed bg-slate-base text-ink-muted'
+                          }`}
                         >
-                          {addedId === productId || inCart ? (
+                          {canOrder && (addedId === productId || inCart) ? (
                             <>
                               <FiCheck className="mr-2" />
                               {copy.addedLabel}
                             </>
                           ) : (
                             <>
-                              <FiPlus className="mr-2" />
-                              {copy.addLabel}
+                              {canOrder ? <FiPlus className="mr-2" /> : <FiMessageCircle className="mr-2" />}
+                              {canOrder ? copy.addLabel : language === 'hi' ? 'पूछें' : 'Ask'}
                             </>
                           )}
                         </button>

@@ -38,6 +38,7 @@ const COPY = {
     freeDelivery: 'Free Delivery',
     assured: 'Assured Quality',
     outOfStock: 'Out of Stock',
+    contactStore: 'Contact Store',
     lowStock: 'Only {n} left',
     addedToast: 'Added to cart'
   },
@@ -126,6 +127,8 @@ const FALLBACK_PRODUCTS = [
     descriptionHindi: 'संतुलित मिट्टी पोषण के लिए पूर्ण NPK मिश्रण।'
   }
 ];
+
+const PRODUCT_ID_RE = /^[a-f\d]{24}$/i;
 
 const categoryIconMap = {
   seeds: TbSeeding,
@@ -238,7 +241,7 @@ export default function ProductsCatalogPage() {
   const { success: toastSuccess } = useToast();
 
   const handleAddToCart = product => {
-    if (product.inStock === false) return;
+    if (product.inStock === false || !PRODUCT_ID_RE.test(String(product?._id || product?.id || ''))) return;
     addToCart({
       id: product._id,
       _id: product._id,
@@ -412,6 +415,7 @@ export default function ProductsCatalogPage() {
             <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {products.map((product, index) => {
                 const justAdded = addedId === product._id;
+                const canOrder = PRODUCT_ID_RE.test(String(product?._id || product?.id || ''));
                 const CategoryIcon = categoryIconMap[product.category] || FiPackage;
                 const localizedName = language === 'hi' ? product.nameHindi || product.name : product.name || product.nameHindi;
                 const mrp = productMrps[product._id] || getMrp(product.price);
@@ -511,17 +515,17 @@ export default function ProductsCatalogPage() {
                       <button
                         type="button"
                         onClick={() => handleAddToCart(product)}
-                        disabled={isOutOfStock}
+                        disabled={isOutOfStock || !canOrder}
                         className={`mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-bold transition-all sm:text-sm ${
-                          isOutOfStock
+                          isOutOfStock || !canOrder
                             ? 'cursor-not-allowed bg-slate-base/60 text-ink-muted'
                             : justAdded
                               ? 'bg-green-500/15 text-green-600'
                               : 'bg-accent-emerald text-white hover:bg-emerald-600 active:scale-[0.97]'
                         }`}
                       >
-                        {justAdded ? <FiCheck size={14} /> : <FiShoppingCart size={14} />}
-                        {justAdded ? copy.added : copy.add}
+                        {canOrder && justAdded ? <FiCheck size={14} /> : <FiShoppingCart size={14} />}
+                        {canOrder ? (justAdded ? copy.added : copy.add) : (copy.contactStore || (isHindi ? 'स्टोर से संपर्क' : 'Contact Store'))}
                       </button>
                     </div>
                   </motion.div>

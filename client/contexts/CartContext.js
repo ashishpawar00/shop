@@ -1,6 +1,11 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 
 const CartContext = createContext(null);
+const PRODUCT_ID_RE = /^[a-f\d]{24}$/i;
+
+function isValidProductId(value) {
+    return typeof value === 'string' && PRODUCT_ID_RE.test(value);
+}
 
 export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState([]);
@@ -10,7 +15,13 @@ export const CartProvider = ({ children }) => {
         if (typeof window !== 'undefined') {
             const saved = localStorage.getItem('lkk_cart');
             if (saved) {
-                try { setCart(JSON.parse(saved)); } catch (e) { /* ignore */ }
+                try {
+                    const parsed = JSON.parse(saved);
+                    const sanitized = Array.isArray(parsed)
+                        ? parsed.filter(item => isValidProductId(String(item?._id || item?.id || '')))
+                        : [];
+                    setCart(sanitized);
+                } catch (e) { /* ignore */ }
             }
         }
     }, []);
@@ -26,16 +37,21 @@ export const CartProvider = ({ children }) => {
     }, [cart]);
 
     const addToCart = (product, qty = 1) => {
+        const productId = String(product?._id || product?.id || '');
+        if (!isValidProductId(productId)) {
+            return;
+        }
+
         setCart(prev => {
-            const existing = prev.find(item => item.id === product.id);
+            const existing = prev.find(item => item.id === productId);
             if (existing) {
                 return prev.map(item =>
-                    item.id === product.id
+                    item.id === productId
                         ? { ...item, quantity: item.quantity + qty }
                         : item
                 );
             }
-            return [...prev, { ...product, quantity: qty }];
+            return [...prev, { ...product, id: productId, _id: productId, quantity: qty }];
         });
     };
 
