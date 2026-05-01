@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -254,7 +254,7 @@ export default function NavbarModern() {
           <>
             <motion.button
               type="button"
-              className="fixed inset-0 z-[55] bg-slate-base/58 backdrop-blur-sm md:hidden"
+              className="fixed inset-0 z-[55] bg-black/50 backdrop-blur-sm md:hidden"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -264,41 +264,45 @@ export default function NavbarModern() {
             />
 
             <motion.aside
-              className="fixed inset-y-0 right-0 z-[60] flex w-[min(92vw,360px)] flex-col border-l border-line-soft/10 bg-slate-base/96 px-4 pb-5 pt-4 shadow-2xl shadow-black/18 backdrop-blur-2xl md:hidden"
+              className="fixed inset-y-0 right-0 z-[60] flex w-[min(88vw,320px)] flex-col bg-slate-base shadow-2xl shadow-black/25 md:hidden"
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
-              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
             >
-              <div className="mb-6 flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-black uppercase tracking-[0.24em] text-accent-emerald">Menu</p>
-                  <p className="mt-2 font-outfit text-xl font-bold text-ink-primary">{labels.menuTitle}</p>
-                </div>
+              {/* Header */}
+              <div className="flex items-center justify-between border-b border-line-soft/10 px-4 py-3">
+                <Link href="/" onClick={() => setIsOpen(false)} className="flex items-center gap-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent-emerald text-sm font-bold text-white">L</div>
+                  <span className="font-outfit text-base font-bold text-ink-primary">Laxmi Krashi</span>
+                </Link>
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
-                  className="rounded-full border border-line-soft/10 bg-slate-card/88 p-2.5 text-ink-muted"
-                  aria-label="Close mobile navigation"
+                  className="rounded-lg p-2 text-ink-muted hover:bg-slate-card"
+                  aria-label="Close"
                 >
                   <FiX size={20} />
                 </button>
               </div>
 
-              <div className="space-y-3 overflow-y-auto pr-1">
+              {/* Nav Links */}
+              <div className="flex-1 overflow-y-auto py-2">
                 {navItems.map(item => (
                   <Link
                     key={item.href}
                     href={item.href}
                     onClick={() => setIsOpen(false)}
-                    className={`flex items-center justify-between rounded-[1.35rem] px-4 py-3.5 font-outfit text-[15px] font-bold ${
-                      item.highlight
-                        ? 'bg-accent-emerald text-white shadow-lg shadow-emerald-500/20'
-                        : 'border border-line-soft/10 bg-slate-card/88 text-ink-primary'
+                    className={`flex items-center justify-between px-5 py-3 text-[15px] font-semibold transition-colors ${
+                      isActive(item.href)
+                        ? 'border-r-[3px] border-accent-emerald bg-accent-emerald/8 text-accent-emerald'
+                        : item.highlight
+                          ? 'text-accent-emerald'
+                          : 'text-ink-primary hover:bg-slate-card/60'
                     }`}
                   >
                     {item.label}
-                    <FiChevronRight className={item.highlight ? 'opacity-80' : 'text-ink-muted'} />
+                    <FiChevronRight size={16} className="text-ink-muted" />
                   </Link>
                 ))}
                 {mobileOnlyItems.map(item => (
@@ -306,74 +310,72 @@ export default function NavbarModern() {
                     key={item.href}
                     href={item.href}
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center justify-between rounded-[1.35rem] border border-line-soft/10 bg-slate-card/88 px-4 py-3.5 font-outfit text-[15px] font-bold text-ink-primary"
+                    className={`flex items-center justify-between px-5 py-3 text-[15px] font-semibold transition-colors ${
+                      isActive(item.href)
+                        ? 'border-r-[3px] border-accent-emerald bg-accent-emerald/8 text-accent-emerald'
+                        : 'text-ink-primary hover:bg-slate-card/60'
+                    }`}
                   >
                     {item.label}
-                    <FiChevronRight className="text-ink-muted" />
+                    <FiChevronRight size={16} className="text-ink-muted" />
                   </Link>
                 ))}
-              </div>
 
-              <div className="mt-5 grid grid-cols-2 gap-3">
-                <LanguageToggle language={language} changeLanguage={changeLanguage} mobile />
-                <div className="flex items-center justify-end gap-3 rounded-full border border-line-soft/10 bg-slate-card/88 px-3">
-                  <span className="text-xs font-black uppercase tracking-[0.18em] text-ink-muted">Theme</span>
-                  <ThemeToggle isLight={isLight} toggleTheme={toggleTheme} mobile />
-                </div>
-              </div>
-
-              <div className="mt-5 grid grid-cols-2 gap-3">
                 {user && isAdmin ? (
                   <Link
                     href="/admin/dashboard"
                     onClick={() => setIsOpen(false)}
-                    className="col-span-2 flex items-center justify-center rounded-[1.35rem] border border-accent-emerald/20 bg-accent-emerald/10 px-4 py-3 font-outfit font-bold text-accent-emerald"
+                    className="mx-4 mt-2 flex items-center justify-center gap-2 rounded-xl bg-accent-emerald/10 px-4 py-2.5 text-sm font-bold text-accent-emerald"
                   >
-                    <FiShield className="mr-2" />
+                    <FiShield size={16} />
                     {labels.adminPanel}
                   </Link>
                 ) : null}
-                <Link
-                  href="/cart"
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center justify-center rounded-[1.35rem] border border-line-soft/10 bg-slate-card/88 px-4 py-3 font-outfit font-bold text-ink-primary"
-                >
-                  <FiShoppingCart className="mr-2 text-accent-emerald" />
-                  {labels.cart}
-                  {cartCount > 0 ? (
-                    <span className="ml-2 rounded-full bg-accent-emerald px-2 py-0.5 text-[10px] font-black text-white">
-                      {cartCount}
-                    </span>
-                  ) : null}
-                </Link>
-
-                {user ? (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      logout();
-                      setIsOpen(false);
-                    }}
-                    className="flex items-center justify-center rounded-[1.35rem] border border-line-soft/10 bg-slate-card/88 px-4 py-3 font-outfit font-bold text-ink-primary"
-                  >
-                    <FiLogOut className="mr-2 text-accent-emerald" />
-                    {labels.logout}
-                  </button>
-                ) : (
-                  <Link
-                    href="/login"
-                    onClick={() => setIsOpen(false)}
-                    className="flex items-center justify-center rounded-[1.35rem] border border-line-soft/10 bg-slate-card/88 px-4 py-3 font-outfit font-bold text-ink-primary"
-                  >
-                    {labels.login}
-                  </Link>
-                )}
               </div>
 
-              <div className="mt-5 rounded-[1.5rem] border border-line-soft/10 bg-slate-card/88 p-4">
-                <p className="text-xs font-black uppercase tracking-[0.24em] text-accent-emerald">{labels.supportTitle}</p>
-                <p className="mt-3 font-outfit text-lg font-bold text-ink-primary">{labels.supportHeading}</p>
-                <p className="mt-2 text-sm leading-relaxed text-ink-muted">{labels.supportBody}</p>
+              {/* Bottom Actions */}
+              <div className="border-t border-line-soft/10 px-4 py-3 space-y-3">
+                {/* Cart & Login row */}
+                <div className="grid grid-cols-2 gap-2">
+                  <Link
+                    href="/cart"
+                    onClick={() => setIsOpen(false)}
+                    className="relative flex items-center justify-center gap-2 rounded-xl bg-accent-emerald py-2.5 text-sm font-bold text-white"
+                  >
+                    <FiShoppingCart size={16} />
+                    {labels.cart}
+                    {cartCount > 0 ? (
+                      <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-black text-white">
+                        {cartCount}
+                      </span>
+                    ) : null}
+                  </Link>
+
+                  {user ? (
+                    <button
+                      type="button"
+                      onClick={() => { logout(); setIsOpen(false); }}
+                      className="flex items-center justify-center gap-2 rounded-xl border border-line-soft/10 bg-slate-card py-2.5 text-sm font-bold text-ink-primary"
+                    >
+                      <FiLogOut size={16} />
+                      {labels.logout}
+                    </button>
+                  ) : (
+                    <Link
+                      href="/login"
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center justify-center gap-2 rounded-xl border border-line-soft/10 bg-slate-card py-2.5 text-sm font-bold text-ink-primary"
+                    >
+                      {labels.login}
+                    </Link>
+                  )}
+                </div>
+
+                {/* Language & Theme row */}
+                <div className="flex items-center justify-between gap-2">
+                  <LanguageToggle language={language} changeLanguage={changeLanguage} />
+                  <ThemeToggle isLight={isLight} toggleTheme={toggleTheme} />
+                </div>
               </div>
             </motion.aside>
           </>

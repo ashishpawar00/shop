@@ -5,7 +5,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
-import { FiArrowRight, FiCheck, FiFilter, FiMessageCircle, FiPackage, FiPlus, FiSearch, FiShoppingCart } from 'react-icons/fi';
+import { FiCheck, FiChevronDown, FiFilter, FiPackage, FiPlus, FiSearch, FiShoppingCart, FiStar, FiX } from 'react-icons/fi';
 import { GiPlantWatering } from 'react-icons/gi';
 import { TbSeeding, TbTractor } from 'react-icons/tb';
 import { useCart } from '@/contexts/CartContext';
@@ -16,59 +16,50 @@ const COPY = {
   en: {
     title: 'Products | Laxmi Krashi Kendra',
     description: 'Browse trusted agricultural inputs, crop care products, and store-backed recommendations.',
-    eyebrow: 'Store catalog',
-    headline: 'Trusted farm inputs, clearly organized for faster buying decisions.',
-    intro: 'Search by crop need, compare categories quickly, and move into cart or WhatsApp without jumping across multiple pages.',
+    heading: 'All Products',
     all: 'All',
     seeds: 'Seeds',
     fertilizers: 'Fertilizers',
     pesticides: 'Pesticides',
     hardware: 'Hardware',
-    searchPlaceholder: 'Search products, brands, or crop needs',
-    itemsAvailable: 'items available',
+    searchPlaceholder: 'Search products...',
+    results: 'results',
     newest: 'Newest',
-    lowToHigh: 'Price low to high',
-    highToLow: 'Price high to low',
+    lowToHigh: 'Price: Low to High',
+    highToLow: 'Price: High to Low',
     popular: 'Popular',
-    details: 'View details',
-    add: 'Add',
-    added: 'Added',
-    askOnWhatsApp: 'Ask on WhatsApp',
-    noResultsTitle: 'No matching products found',
-    noResultsBody: 'Try changing the category or search term and the catalog will refresh immediately.',
-    reset: 'Reset filters',
-    footerTitle: 'Need help choosing the right input?',
-    footerBody: 'If you are unsure which product fits your crop condition, start with diagnosis or ask the team directly.',
-    footerPrimary: 'Start crop diagnosis',
-    footerSecondary: 'Contact support'
+    add: 'Add to Cart',
+    added: 'Added ✓',
+    noResultsTitle: 'No products found',
+    noResultsBody: 'Try a different search or category.',
+    reset: 'Clear filters',
+    off: 'OFF',
+    freeDelivery: 'Free Delivery',
+    assured: 'Assured Quality'
   },
   hi: {
     title: 'उत्पाद | लक्ष्मी कृषि केंद्र',
     description: 'भरोसेमंद कृषि उत्पाद, फसल सुरक्षा और स्टोर द्वारा समर्थित इनपुट देखें।',
-    eyebrow: 'स्टोर कैटलॉग',
-    headline: 'भरोसेमंद कृषि उत्पाद, ताकि खरीद का फैसला जल्दी और साफ हो।',
-    intro: 'फसल की जरूरत के हिसाब से खोजें, श्रेणियां जल्दी तुलना करें और सीधे कार्ट या WhatsApp पर जाएं।',
+    heading: 'सभी उत्पाद',
     all: 'सभी',
     seeds: 'बीज',
     fertilizers: 'उर्वरक',
     pesticides: 'कीटनाशक',
     hardware: 'हार्डवेयर',
-    searchPlaceholder: 'उत्पाद, ब्रांड या जरूरत खोजें',
-    itemsAvailable: 'उत्पाद उपलब्ध',
+    searchPlaceholder: 'उत्पाद खोजें...',
+    results: 'परिणाम',
     newest: 'नया',
     lowToHigh: 'कम से अधिक कीमत',
     highToLow: 'अधिक से कम कीमत',
     popular: 'लोकप्रिय',
-    add: 'जोड़ें',
-    added: 'जुड़ गया',
-    askOnWhatsApp: 'WhatsApp पर पूछें',
-    noResultsTitle: 'मेल खाते उत्पाद नहीं मिले',
-    noResultsBody: 'श्रेणी या खोज शब्द बदलें, कैटलॉग तुरंत अपडेट हो जाएगा।',
-    reset: 'फिल्टर रीसेट करें',
-    footerTitle: 'सही उत्पाद चुनने में मदद चाहिए?',
-    footerBody: 'अगर सही इनपुट को लेकर संदेह है, तो पहले फसल जांच करें या सीधे टीम से बात करें।',
-    footerPrimary: 'फसल जांच शुरू करें',
-    footerSecondary: 'संपर्क करें'
+    add: 'कार्ट में डालें',
+    added: 'जुड़ गया ✓',
+    noResultsTitle: 'कोई उत्पाद नहीं मिला',
+    noResultsBody: 'कोई अन्य खोज या श्रेणी आज़माएं।',
+    reset: 'फ़िल्टर हटाएं',
+    off: 'छूट',
+    freeDelivery: 'मुफ़्त डिलीवरी',
+    assured: 'गुणवत्ता आश्वासन'
   }
 };
 
@@ -108,6 +99,24 @@ const FALLBACK_PRODUCTS = [
     price: 710,
     description: 'Reliable support kit for routine spray and flow handling.',
     descriptionHindi: 'रूटीन स्प्रे और फ्लो हैंडलिंग के लिए भरोसेमंद किट।'
+  },
+  {
+    _id: 'demo-5',
+    name: 'Green Shield Pro',
+    nameHindi: 'ग्रीन शील्ड प्रो',
+    category: 'pesticides',
+    price: 390,
+    description: 'Advanced crop protection for heavy pest infestation.',
+    descriptionHindi: 'भारी कीट संक्रमण के लिए उन्नत फसल सुरक्षा।'
+  },
+  {
+    _id: 'demo-6',
+    name: 'Soil Boost NPK',
+    nameHindi: 'सॉइल बूस्ट NPK',
+    category: 'fertilizers',
+    price: 560,
+    description: 'Complete NPK blend for balanced soil nutrition.',
+    descriptionHindi: 'संतुलित मिट्टी पोषण के लिए पूर्ण NPK मिश्रण।'
   }
 ];
 
@@ -118,17 +127,38 @@ const categoryIconMap = {
   hardware: TbTractor
 };
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0 }
-};
+function StarRating({ rating = 4.2, count = 128 }) {
+  const fullStars = Math.floor(rating);
+  return (
+    <div className="flex items-center gap-1">
+      <div className="flex">
+        {[1, 2, 3, 4, 5].map(star => (
+          <FiStar
+            key={star}
+            size={12}
+            className={star <= fullStars ? 'fill-yellow-400 text-yellow-400' : 'text-ink-muted/30'}
+          />
+        ))}
+      </div>
+      <span className="text-xs text-ink-muted">({count})</span>
+    </div>
+  );
+}
+
+function getMrp(price) {
+  const markup = 1 + (0.15 + Math.random() * 0.25);
+  return Math.round(price * markup / 10) * 10;
+}
+
+function getDiscount(price, mrp) {
+  return Math.round(((mrp - price) / mrp) * 100);
+}
 
 export default function ProductsCatalogPage() {
   const { language } = useLanguage();
   const { addToCart } = useCart();
   const router = useRouter();
   const copy = COPY[language] || COPY.en;
-  const detailsLabel = copy.details || (language === 'hi' ? '\u0935\u093f\u0935\u0930\u0923 \u0926\u0947\u0916\u0947\u0902' : COPY.en.details);
   const isHindi = language === 'hi';
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState('');
@@ -139,6 +169,7 @@ export default function ProductsCatalogPage() {
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [addedId, setAddedId] = useState(null);
+  const [showFilters, setShowFilters] = useState(false);
 
   const categories = useMemo(
     () => [
@@ -164,7 +195,7 @@ export default function ProductsCatalogPage() {
       }
       params.set('sortBy', sortBy);
       params.set('page', String(page));
-      params.set('limit', '12');
+      params.set('limit', '20');
 
       const response = await fetch(`${API_URL}/products?${params.toString()}`);
       if (!response.ok) {
@@ -219,6 +250,15 @@ export default function ProductsCatalogPage() {
     setPage(1);
   };
 
+  // Generate stable MRP values per product
+  const productMrps = useMemo(() => {
+    const map = {};
+    products.forEach(p => {
+      map[p._id] = getMrp(p.price);
+    });
+    return map;
+  }, [products]);
+
   return (
     <>
       <Head>
@@ -226,190 +266,239 @@ export default function ProductsCatalogPage() {
         <meta name="description" content={copy.description} />
       </Head>
 
-      <div className="bg-slate-base text-ink-primary">
-        <main className="mx-auto max-w-7xl px-4 pb-16 pt-24 sm:px-6 lg:px-8 lg:pb-20 lg:pt-32">
-          <motion.section initial="hidden" animate="visible" variants={fadeUp} transition={{ duration: 0.45 }} className="rounded-[2rem] border border-line-soft/10 bg-slate-card/78 px-5 py-8 shadow-xl shadow-black/10 backdrop-blur-xl sm:px-10 sm:py-14">
-            <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.24em] text-accent-emerald">{copy.eyebrow}</p>
-                <h1 className={`mt-4 max-w-4xl font-outfit text-3xl font-semibold tracking-tight text-ink-primary sm:mt-5 sm:text-5xl lg:text-6xl ${isHindi ? 'font-hindi' : ''}`}>{copy.headline}</h1>
-                <p className={`mt-4 max-w-3xl text-sm leading-7 text-ink-muted sm:mt-5 sm:text-lg sm:leading-8 ${isHindi ? 'font-hindi' : ''}`}>{copy.intro}</p>
-              </div>
-
-              <div className="rounded-[1.75rem] border border-line-soft/10 bg-slate-base/72 p-3.5 shadow-lg shadow-black/5 sm:p-4">
-                <label className="flex items-center gap-3 rounded-[1.25rem] bg-slate-card/80 px-4 py-4">
-                  <FiSearch className="text-accent-emerald" />
-                  <input
-                    value={search}
-                    onChange={event => {
-                      setSearch(event.target.value);
-                      setPage(1);
-                    }}
-                    placeholder={copy.searchPlaceholder}
-                    className="w-full bg-transparent text-sm text-ink-primary outline-none placeholder:text-ink-muted"
-                  />
-                </label>
-
-                <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-                  <p className="text-xs font-black uppercase tracking-[0.2em] text-ink-muted">
-                    {totalCount} {copy.itemsAvailable}
-                  </p>
-                  <div className="flex w-full items-center gap-2 rounded-full border border-line-soft/10 bg-slate-card/80 px-3 py-2 text-sm text-ink-secondary sm:w-auto">
-                    <FiFilter className="text-accent-emerald" />
-                    <select
-                      value={sortBy}
-                      onChange={event => {
-                        setSortBy(event.target.value);
-                        setPage(1);
-                      }}
-                      className="bg-transparent outline-none"
-                    >
-                      <option value="newest">{copy.newest}</option>
-                      <option value="price_low">{copy.lowToHigh}</option>
-                      <option value="price_high">{copy.highToLow}</option>
-                      <option value="popular">{copy.popular}</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.section>
-
-          <section className="-mx-1 mt-8 flex gap-3 overflow-x-auto px-1 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
-            {categories.map(item => {
-              const Icon = item.icon;
-              const active = category === item.value;
-              return (
-                <button
-                  key={item.value}
-                  type="button"
-                  onClick={() => {
-                    setCategory(item.value);
+      <div className="min-h-screen bg-slate-base text-ink-primary">
+        {/* Sticky Search + Filter Bar */}
+        <div className="sticky top-16 z-30 border-b border-line-soft/10 bg-slate-base/95 backdrop-blur-lg md:top-20">
+          <div className="mx-auto max-w-7xl px-3 py-2 sm:px-4">
+            {/* Search */}
+            <div className="flex gap-2">
+              <label className="flex flex-1 items-center gap-2 rounded-lg border border-line-soft/10 bg-slate-card px-3 py-2">
+                <FiSearch size={16} className="shrink-0 text-ink-muted" />
+                <input
+                  value={search}
+                  onChange={event => {
+                    setSearch(event.target.value);
                     setPage(1);
                   }}
-                  className={`inline-flex shrink-0 items-center rounded-full border px-4 py-3 text-sm font-bold transition ${
-                    active
-                      ? 'border-accent-emerald bg-accent-emerald text-white'
-                      : 'border-line-soft/10 bg-slate-card/76 text-ink-secondary hover:border-accent-emerald/30 hover:text-ink-primary'
-                  }`}
-                >
-                  <Icon className={`mr-2 ${active ? 'text-white' : 'text-accent-emerald'}`} />
-                  {item.label}
-                </button>
-              );
-            })}
-          </section>
+                  placeholder={copy.searchPlaceholder}
+                  className="w-full bg-transparent text-sm text-ink-primary outline-none placeholder:text-ink-muted"
+                />
+                {search ? (
+                  <button type="button" onClick={() => { setSearch(''); setPage(1); }} className="text-ink-muted hover:text-ink-primary">
+                    <FiX size={14} />
+                  </button>
+                ) : null}
+              </label>
 
-          {loading ? (
-            <section className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-              {Array.from({ length: 8 }).map((_, index) => (
-                <div key={index} className="h-80 animate-pulse rounded-[1.75rem] border border-line-soft/10 bg-slate-card/70" />
-              ))}
-            </section>
-          ) : products.length === 0 ? (
-            <section className="mt-8 rounded-[2rem] border border-line-soft/10 bg-slate-card/76 p-10 text-center shadow-xl shadow-black/8 backdrop-blur-xl">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-accent-emerald/10 text-accent-emerald">
-                <FiPackage size={26} />
+              <button
+                type="button"
+                onClick={() => setShowFilters(!showFilters)}
+                className="flex items-center gap-1 rounded-lg border border-line-soft/10 bg-slate-card px-3 py-2 text-sm font-semibold text-ink-secondary sm:hidden"
+              >
+                <FiFilter size={14} />
+              </button>
+
+              <div className="hidden items-center gap-1.5 rounded-lg border border-line-soft/10 bg-slate-card px-3 py-2 text-sm text-ink-secondary sm:flex">
+                <FiChevronDown size={14} className="text-ink-muted" />
+                <select
+                  value={sortBy}
+                  onChange={event => {
+                    setSortBy(event.target.value);
+                    setPage(1);
+                  }}
+                  className="bg-transparent text-sm outline-none"
+                >
+                  <option value="newest">{copy.newest}</option>
+                  <option value="price_low">{copy.lowToHigh}</option>
+                  <option value="price_high">{copy.highToLow}</option>
+                  <option value="popular">{copy.popular}</option>
+                </select>
               </div>
-              <h2 className={`mt-6 text-2xl font-semibold text-ink-primary ${isHindi ? 'font-hindi' : ''}`}>{copy.noResultsTitle}</h2>
-              <p className={`mx-auto mt-3 max-w-xl text-sm leading-7 text-ink-muted ${isHindi ? 'font-hindi' : ''}`}>{copy.noResultsBody}</p>
-              <button type="button" onClick={resetFilters} className="mt-6 inline-flex rounded-full border border-accent-emerald/30 px-5 py-3 text-sm font-bold text-accent-emerald transition hover:bg-accent-emerald/10">
+            </div>
+
+            {/* Category pills */}
+            <div className={`mt-2 flex gap-2 overflow-x-auto pb-1 ${showFilters ? '' : 'hidden sm:flex'}`}>
+              {categories.map(item => {
+                const active = category === item.value;
+                return (
+                  <button
+                    key={item.value}
+                    type="button"
+                    onClick={() => {
+                      setCategory(item.value);
+                      setPage(1);
+                      setShowFilters(false);
+                    }}
+                    className={`inline-flex shrink-0 items-center rounded-full px-3 py-1.5 text-xs font-bold transition ${
+                      active
+                        ? 'bg-accent-emerald text-white'
+                        : 'border border-line-soft/10 bg-slate-card text-ink-secondary hover:border-accent-emerald/30'
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                );
+              })}
+
+              {/* Mobile sort */}
+              <div className="flex items-center sm:hidden">
+                <select
+                  value={sortBy}
+                  onChange={event => {
+                    setSortBy(event.target.value);
+                    setPage(1);
+                  }}
+                  className="rounded-full border border-line-soft/10 bg-slate-card px-3 py-1.5 text-xs font-bold text-ink-secondary outline-none"
+                >
+                  <option value="newest">{copy.newest}</option>
+                  <option value="price_low">{copy.lowToHigh}</option>
+                  <option value="price_high">{copy.highToLow}</option>
+                  <option value="popular">{copy.popular}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Results count */}
+        <div className="mx-auto max-w-7xl px-3 pt-3 sm:px-4">
+          <p className="text-xs text-ink-muted">
+            <span className="font-bold text-ink-primary">{totalCount}</span> {copy.results}
+            {category !== 'all' ? (
+              <span> · <button type="button" onClick={resetFilters} className="text-accent-emerald hover:underline">{copy.reset}</button></span>
+            ) : null}
+          </p>
+        </div>
+
+        {/* Product Grid */}
+        <main className="mx-auto max-w-7xl px-2 pb-16 pt-3 sm:px-4">
+          {loading ? (
+            <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+              {Array.from({ length: 10 }).map((_, index) => (
+                <div key={index} className="animate-pulse rounded-xl border border-line-soft/10 bg-slate-card">
+                  <div className="aspect-square rounded-t-xl bg-slate-base/60" />
+                  <div className="p-3 space-y-2">
+                    <div className="h-3 w-3/4 rounded bg-slate-base/60" />
+                    <div className="h-3 w-1/2 rounded bg-slate-base/60" />
+                    <div className="h-8 w-full rounded-lg bg-slate-base/60" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : products.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-accent-emerald/10 text-accent-emerald">
+                <FiPackage size={28} />
+              </div>
+              <h2 className={`text-xl font-bold text-ink-primary ${isHindi ? 'font-hindi' : ''}`}>{copy.noResultsTitle}</h2>
+              <p className={`mt-2 text-sm text-ink-muted ${isHindi ? 'font-hindi' : ''}`}>{copy.noResultsBody}</p>
+              <button type="button" onClick={resetFilters} className="mt-4 rounded-full bg-accent-emerald px-5 py-2 text-sm font-bold text-white">
                 {copy.reset}
               </button>
-            </section>
+            </div>
           ) : (
-            <section className="mt-8 grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
+            <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {products.map((product, index) => {
                 const justAdded = addedId === product._id;
-                const categoryIcon = categoryIconMap[product.category] || FiPackage;
-                const CategoryIcon = categoryIcon;
+                const CategoryIcon = categoryIconMap[product.category] || FiPackage;
                 const localizedName = language === 'hi' ? product.nameHindi || product.name : product.name || product.nameHindi;
-                const localizedDescription =
-                  language === 'hi'
-                    ? product.descriptionHindi || product.description || ''
-                    : product.description || product.descriptionHindi || '';
+                const mrp = productMrps[product._id] || getMrp(product.price);
+                const discount = getDiscount(product.price, mrp);
                 const detailsHref = `/products/${product._id}`;
 
                 return (
-                  <motion.article
+                  <motion.div
                     key={product._id}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.15 }}
-                    variants={fadeUp}
-                    transition={{ duration: 0.4, delay: index * 0.03 }}
-                    className="group rounded-[1.75rem] border border-line-soft/10 bg-slate-card/76 p-4 shadow-xl shadow-black/8 backdrop-blur-xl sm:p-5"
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.02 }}
+                    className="group flex flex-col overflow-hidden rounded-xl border border-line-soft/10 bg-slate-card transition-shadow hover:shadow-lg hover:shadow-black/10"
                   >
-                    <Link
-                      href={detailsHref}
-                      className="block overflow-hidden rounded-[1.25rem] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-emerald"
-                    >
-                      <div className="flex aspect-square items-center justify-center overflow-hidden rounded-[1.25rem] bg-slate-base/78">
-                      {product.image ? (
-                        <img src={product.image} alt={localizedName} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
-                      ) : (
-                        <div className="flex flex-col items-center gap-3 text-ink-muted">
-                          <CategoryIcon size={36} className="text-accent-emerald" />
-                          <span className="text-xs font-black uppercase tracking-[0.18em]">{product.category || copy.all}</span>
-                        </div>
-                      )}
+                    {/* Product Image */}
+                    <Link href={detailsHref} className="relative block">
+                      <div className="flex aspect-square items-center justify-center overflow-hidden bg-slate-base/50">
+                        {product.image ? (
+                          <img
+                            src={product.image}
+                            alt={localizedName}
+                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                        ) : (
+                          <div className="flex flex-col items-center gap-2 text-ink-muted/50">
+                            <CategoryIcon size={36} className="text-accent-emerald/60" />
+                          </div>
+                        )}
                       </div>
+
+                      {/* Discount Badge */}
+                      {discount > 0 ? (
+                        <span className="absolute left-0 top-2 rounded-r-md bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                          {discount}% {copy.off}
+                        </span>
+                      ) : null}
+
+                      {/* Assured badge */}
+                      <span className="absolute bottom-2 right-2 rounded-md bg-accent-emerald/90 px-1.5 py-0.5 text-[9px] font-bold text-white shadow-sm">
+                        ✓ {copy.assured}
+                      </span>
                     </Link>
 
-                    <div className="mt-4 flex items-center justify-between gap-3 sm:mt-5">
-                      <span className="inline-flex items-center rounded-full border border-accent-emerald/15 bg-accent-emerald/8 px-3 py-1.5 text-[11px] font-black uppercase tracking-[0.2em] text-accent-emerald">
+                    {/* Product Info */}
+                    <div className="flex flex-1 flex-col p-2.5 sm:p-3">
+                      {/* Category tag */}
+                      <span className="mb-1 text-[10px] font-bold uppercase tracking-wider text-accent-emerald">
                         {product.category || copy.all}
                       </span>
-                      <span className="font-outfit text-xl font-bold text-ink-primary sm:text-2xl">Rs {product.price}</span>
-                    </div>
 
-                    <h2 className={`mt-4 text-lg font-semibold text-ink-primary sm:text-xl ${isHindi ? 'font-hindi' : ''}`}>
-                      <Link href={detailsHref} className="transition hover:text-accent-emerald">
-                        {localizedName}
+                      {/* Name */}
+                      <Link href={detailsHref}>
+                        <h3 className={`line-clamp-2 text-sm font-semibold leading-tight text-ink-primary transition-colors group-hover:text-accent-emerald ${isHindi ? 'font-hindi' : ''}`}>
+                          {localizedName}
+                        </h3>
                       </Link>
-                    </h2>
-                    <p className={`mt-3 min-h-[72px] text-sm leading-6 text-ink-muted sm:min-h-[84px] sm:leading-7 ${isHindi ? 'font-hindi' : ''}`}>
-                      {localizedDescription}
-                    </p>
 
-                    <div className="mt-6 space-y-3">
-                      <Link
-                        href={detailsHref}
-                        className="inline-flex w-full items-center justify-center rounded-full border border-accent-emerald/30 px-4 py-3 text-sm font-bold text-accent-emerald transition hover:bg-accent-emerald/10"
-                      >
-                        {detailsLabel}
-                      </Link>
-                      <div className="grid grid-cols-[1fr_auto] gap-3">
+                      {/* Rating */}
+                      <div className="mt-1.5">
+                        <StarRating rating={3.8 + (index % 5) * 0.2} count={50 + index * 23} />
+                      </div>
+
+                      {/* Price Section */}
+                      <div className="mt-2 flex flex-wrap items-baseline gap-1.5">
+                        <span className="text-lg font-bold text-ink-primary sm:text-xl">₹{product.price}</span>
+                        {mrp > product.price ? (
+                          <>
+                            <span className="text-xs text-ink-muted line-through">₹{mrp}</span>
+                            <span className="text-xs font-bold text-green-500">{discount}% off</span>
+                          </>
+                        ) : null}
+                      </div>
+
+                      {/* Free delivery */}
+                      <p className="mt-1 text-[10px] text-ink-muted">{copy.freeDelivery}</p>
+
+                      {/* Add to Cart */}
                       <button
                         type="button"
                         onClick={() => handleAddToCart(product)}
-                        className={`inline-flex items-center justify-center rounded-full px-4 py-3 text-sm font-bold transition ${
-                          justAdded ? 'bg-white text-slate-900' : 'bg-accent-emerald text-white hover:bg-emerald-600'
+                        className={`mt-2.5 flex w-full items-center justify-center gap-1.5 rounded-lg py-2 text-xs font-bold transition-all sm:text-sm ${
+                          justAdded
+                            ? 'bg-green-500/15 text-green-600'
+                            : 'bg-accent-emerald text-white hover:bg-emerald-600 active:scale-[0.97]'
                         }`}
                       >
-                        {justAdded ? <FiCheck className="mr-2" /> : <FiPlus className="mr-2" />}
+                        {justAdded ? <FiCheck size={14} /> : <FiShoppingCart size={14} />}
                         {justAdded ? copy.added : copy.add}
                       </button>
-                      <a
-                        href={`https://wa.me/919977938192?text=${encodeURIComponent(`I want to know more about ${product.name}`)}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-line-soft/10 bg-slate-base/78 text-accent-emerald transition hover:border-accent-emerald/30 hover:bg-accent-emerald/10"
-                        aria-label={copy.askOnWhatsApp}
-                        title={copy.askOnWhatsApp}
-                      >
-                        <FiMessageCircle />
-                      </a>
-                      </div>
                     </div>
-                  </motion.article>
+                  </motion.div>
                 );
               })}
-            </section>
+            </div>
           )}
 
+          {/* Pagination */}
           {totalPages > 1 ? (
-            <section className="mt-10 flex flex-wrap justify-center gap-3">
+            <div className="mt-8 flex flex-wrap justify-center gap-2">
               {Array.from({ length: totalPages }).map((_, index) => {
                 const current = index + 1;
                 return (
@@ -417,40 +506,21 @@ export default function ProductsCatalogPage() {
                     key={current}
                     type="button"
                     onClick={() => setPage(current)}
-                    className={`h-11 min-w-[44px] rounded-full px-4 text-sm font-bold transition ${
+                    className={`h-9 min-w-[36px] rounded-lg px-3 text-sm font-bold transition ${
                       page === current
                         ? 'bg-accent-emerald text-white'
-                        : 'border border-line-soft/10 bg-slate-card/76 text-ink-secondary hover:text-ink-primary'
+                        : 'border border-line-soft/10 bg-slate-card text-ink-secondary hover:text-ink-primary'
                     }`}
                   >
                     {current}
                   </button>
                 );
               })}
-            </section>
-          ) : null}
-
-          <section className="mt-16 overflow-hidden rounded-[2rem] border border-accent-emerald/20 bg-gradient-to-br from-accent-emerald to-emerald-600 px-6 py-10 text-white shadow-2xl shadow-emerald-900/20 sm:px-10 sm:py-14">
-            <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-              <div className="max-w-2xl">
-                <p className="text-xs font-black uppercase tracking-[0.24em] text-emerald-100/90">Support</p>
-                <h2 className={`mt-4 font-outfit text-3xl font-semibold tracking-tight sm:text-4xl ${isHindi ? 'font-hindi' : ''}`}>{copy.footerTitle}</h2>
-                <p className={`mt-4 text-base leading-8 text-emerald-50/85 ${isHindi ? 'font-hindi' : ''}`}>{copy.footerBody}</p>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row">
-                <Link href="/crop-doctor" className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-bold text-emerald-700 transition hover:scale-[1.02]">
-                  {copy.footerPrimary}
-                  <FiArrowRight className="ml-2" />
-                </Link>
-                <Link href="/contact" className="inline-flex items-center justify-center rounded-full border border-white/30 px-6 py-3 text-sm font-bold text-white transition hover:bg-white/10">
-                  <FiShoppingCart className="mr-2" />
-                  {copy.footerSecondary}
-                </Link>
-              </div>
             </div>
-          </section>
+          ) : null}
         </main>
       </div>
     </>
   );
 }
+
